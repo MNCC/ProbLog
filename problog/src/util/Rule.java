@@ -20,15 +20,16 @@ public class Rule {
 
 	   @Override
 	   public String toString(){
-
 	   		  StringBuilder sb=new StringBuilder();
 		      sb.append(head.toString()+" :-");
 		      for(int i=0;i<bodys.length-1;i++){
-		    	  sb.append(bodys[i].toString()+" ,");
+		    	  sb.append(bodys[i].toString());
+		    	  sb.append(" ,");
 		      }
 		      sb.append(bodys[bodys.length-1]);
 		      if(pro!=1){
-		    	  sb.append(" :"+String.valueOf(pro));
+		    	  sb.append(" :");
+		    	  sb.append(pro);
 		      }
 		      return sb.toString();
 	   }
