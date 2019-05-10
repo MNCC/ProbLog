@@ -14,7 +14,7 @@ import util.Rule;
 
 class RuleTree{
 	Fact val=null;
-	ArrayList<RuleTree> child;
+	final ArrayList<RuleTree> child;
 	RuleTree par=null;
 	boolean canInsert=false;
 	Rule r=null;
@@ -30,7 +30,7 @@ class RuleTree{
 }
 public class AdInference {
 	public HashMap<String,Fact> database;
-    dlParser parser;
+    final dlParser parser;
     ArrayList<Rule> rules;
     boolean hasPro;
     public HashMap<String,ArrayList<Fact>> factMap;

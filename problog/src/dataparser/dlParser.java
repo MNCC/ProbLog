@@ -18,9 +18,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class dlParser {
     
-    ArrayList<String> dataSentence=new ArrayList<String>();
-    public ArrayList<Fact> edb=new ArrayList<Fact>();
-    public ArrayList<Rule> rules=new ArrayList<Rule>();
+    final ArrayList<String> dataSentence=new ArrayList<String>();
+    public final ArrayList<Fact> edb=new ArrayList<Fact>();
+    public final ArrayList<Rule> rules=new ArrayList<Rule>();
 	public void dataReader(String textName) throws IOException{
 		
 		try (BufferedReader br = Files.newBufferedReader(Paths.get(System.getProperty("user.dir")+textName), UTF_8)) {

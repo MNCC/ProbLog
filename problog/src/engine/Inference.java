@@ -17,9 +17,9 @@ import util.Literal;
 import util.Rule;
 
 class AnwserTree{
-	  Fact curAnwser;
+	  final Fact curAnwser;
 	  AnwserTree par=null;
-	  ArrayList<AnwserTree> child;
+	  final ArrayList<AnwserTree> child;
 	  public AnwserTree(Fact curAnwser){
 		  this.curAnwser=curAnwser;
 		  child=new ArrayList<AnwserTree>();
@@ -33,7 +33,7 @@ class AnwserTree{
 }
 public class Inference {
        public HashMap<String,Fact> database;
-       dlParser parser;
+       final dlParser parser;
        ArrayList<Rule> rules;
        boolean hasPro;
        public HashMap<String,ArrayList<Fact>> factMap;
