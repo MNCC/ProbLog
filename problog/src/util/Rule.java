@@ -17,9 +17,11 @@ public class Rule {
 		   this.bodys=bodys;
 		   this.pro=pro;
 	   }
+
+	   @Override
 	   public String toString(){
-		      
-		      StringBuffer sb=new StringBuffer();
+
+	   		  StringBuilder sb=new StringBuilder();
 		      sb.append(head.toString()+" :-");
 		      for(int i=0;i<bodys.length-1;i++){
 		    	  sb.append(bodys[i].toString()+" ,");

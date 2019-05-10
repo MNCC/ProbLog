@@ -16,10 +16,10 @@ public class Literal {
 		   this.variables=variables;
 	   }
 	   
-	   
+	   		@Override
 		   public String toString(){
-			      
-			      StringBuffer sb=new StringBuffer();
+
+	   			  StringBuilder sb=new StringBuilder();
 			      sb.append(predicate+"(");
 			      for(int i=0;i<variables.length-1;i++){
 			    	  sb.append(variables[i]+",");

@@ -17,10 +17,10 @@ public class Fact {
 		   
 	   }
 	   
-	  
+	   @Override
 	   public String toString(){
-		      
-		      StringBuffer sb=new StringBuffer();
+
+		   	  StringBuilder sb=new StringBuilder();
 		      sb.append(predicate+"(");
 		      for(int i=0;i<constants.length-1;i++){
 		    	  sb.append(constants[i]+",");
@@ -32,7 +32,7 @@ public class Fact {
 		      return sb.toString();
 	   }
 	  public String eString(){
-		  StringBuffer sb=new StringBuffer();
+		  StringBuilder sb=new StringBuilder();
 	      sb.append(predicate+"(");
 	      for(int i=0;i<constants.length-1;i++){
 	    	  sb.append(constants[i]+",");

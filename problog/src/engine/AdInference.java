@@ -22,7 +22,8 @@ class RuleTree{
 		this.val=val;
 		child=new ArrayList<RuleTree>();
 	}
-	
+
+	@Override
 	public String toString(){
 		return val.toString();
 	}
@@ -192,7 +193,7 @@ public class AdInference {
     }
     public boolean updateCollection(Fact f, ArrayList<Fact> fs){
     	   @Var boolean isUpdate=false;
-    	   StringBuffer sb=new StringBuffer();
+    	   StringBuilder sb=new StringBuilder();
     	   Fact temp=new Fact(f.predicate,f.constants);
     	   if(hasPro)
     		   temp.pro=f.pro;
