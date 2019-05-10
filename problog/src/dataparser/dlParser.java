@@ -69,10 +69,10 @@ public class dlParser {
 		   if(!val.contains(","))
 			   return false;
 		   String[] token=val.substring(1,val.length()-2).split(",");
-		   for(int i=0;i<token.length;i++){
-			   if(token[i].length()>1||(token[i].charAt(0)<='A'&&token[i].charAt(0)>='Z'))
-				   return false;
-		   }
+		for (String s : token) {
+			if (s.length() > 1 || (s.charAt(0) <= 'A' && s.charAt(0) >= 'Z'))
+				return false;
+		}
 		   return true;
 	}
 	public boolean isRule(String str){
@@ -87,13 +87,13 @@ public class dlParser {
 		//System.out.println(body);
 		if(!isLiteral(head))
 			return false;
-		String[] bodys=body.split(", "); 
-		for(int i=0;i<bodys.length;i++){
-			if(!isLiteral(bodys[i])&&!isFact(bodys[i])){
-				System.out.println(bodys[i]+" is wrong");
+		String[] bodys=body.split(", ");
+		for (String s : bodys) {
+			if (!isLiteral(s) && !isFact(s)) {
+				System.out.println(s + " is wrong");
 				return false;
 			}
-				
+
 		}
 		return true;
 	}

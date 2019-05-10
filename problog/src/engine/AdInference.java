@@ -149,9 +149,9 @@ public class AdInference {
 // 	   System.out.println("----------------------------");
 // 	   System.out.println("collecrions is: "+collection);
 // 	  System.out.println("----------------------------");
- 	      for(int i=0;i<collection.size();i++)
- 	    	  if(!collection.get(i).isEmpty())
- 	    	  res.add(inferTheFact(r,collection.get(i)));
+		for (ArrayList<Fact> facts : collection)
+			if (!facts.isEmpty())
+				res.add(inferTheFact(r, facts));
  	      return res;
     }
     public Fact infer(Rule r,ArrayList<Fact> fs){
@@ -428,18 +428,18 @@ public class AdInference {
 
 	   public double getMin(ArrayList<Fact> f){
     	      @Var double min=1;
-		      for(int i=0;i<f.size();i++){
-		    	  if(f.get(i).pro<min)
-		    		  min=f.get(i).pro;
-		      }
+		   for (Fact fact : f) {
+			   if (fact.pro < min)
+				   min = fact.pro;
+		   }
 		      return min;
 		      
 	   }
 	   public double getProduction(ArrayList<Fact> f){
     		  @Var double res=1;
-		      for(int i=0;i<f.size();i++){
-		    	 res=res*f.get(i).pro;
-		      }
+		   for (Fact fact : f) {
+			   res = res * fact.pro;
+		   }
 		      return res;
 	   }
 	   public Fact combineFacts(ArrayList<Fact> fs){
@@ -711,9 +711,9 @@ public class AdInference {
 		    		  //temp=(ArrayList<Fact>) findAllMatch(r,false).clone();
 		    		  temp=inferFacts(Tree(r),r);
 		    		  //System.out.println("current infer is: "+temp);
-		    		  for(int i=0;i<temp.size();i++){
-						  idb.addAll(temp.get(i));
-		    		  }
+					  for (ArrayList<Fact> facts : temp) {
+						  idb.addAll(facts);
+					  }
 		    	  }
 //		    	  for(Fact f:idb){
 //		    		  RuleTree root=null;
@@ -746,12 +746,11 @@ public class AdInference {
 		    				  fs.add(temp);
 		    			  }
 		    		  }
-		    		  for(int i=0;i<fs.size();i++){
-		    			  ArrayList<ArrayList<Fact>> temp1=fs.get(i);
-		    			  for(int j=0;j<temp1.size();j++){
-							  idb.addAll(temp1.get(j));
-		    			  }
-		    		  }
+					  for (ArrayList<ArrayList<Fact>> temp1 : fs) {
+						  for (ArrayList<Fact> facts : temp1) {
+							  idb.addAll(facts);
+						  }
+					  }
 		    	  }
 		    	  idb=dupFactRemove(idb);
 		    	  curIDB=(ArrayList<Fact>) idb.clone();

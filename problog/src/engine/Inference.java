@@ -87,9 +87,9 @@ public class Inference {
        }
        public ArrayList<ArrayList<Fact>> inferFacts(ArrayList<ArrayList<Fact>> collection,Rule r){
     	   ArrayList<ArrayList<Fact>> res=new ArrayList<ArrayList<Fact>>();
-    	      for(int i=0;i<collection.size();i++)
-    	    	  if(!collection.get(i).isEmpty())
-    	    	  res.add(inferTheFact(r,collection.get(i)));
+		   for (ArrayList<Fact> facts : collection)
+			   if (!facts.isEmpty())
+				   res.add(inferTheFact(r, facts));
     	      return res;
        }
        public Fact infer(Rule r,ArrayList<Fact> fs){
@@ -225,18 +225,18 @@ public class Inference {
 
 	   public double getMin(ArrayList<Fact> f){
        	      @Var double min=1;
-		      for(int i=0;i<f.size();i++){
-		    	  if(f.get(i).pro<min)
-		    		  min=f.get(i).pro;
-		      }
+		   for (Fact fact : f) {
+			   if (fact.pro < min)
+				   min = fact.pro;
+		   }
 		      return min;
 		      
 	   }
 	   public double getProduction(ArrayList<Fact> f){
 		      @Var double res=1;
-		      for(int i=0;i<f.size();i++){
-		    	 res=res*f.get(i).pro;
-		      }
+		   for (Fact fact : f) {
+			   res = res * fact.pro;
+		   }
 		      return res;
 	   }
 	   public Fact combineFacts(ArrayList<Fact> fs){
@@ -351,10 +351,10 @@ public class Inference {
 		    		  //temp=(ArrayList<Fact>) findAllMatch(r,false).clone();
 		    		  temp=inferFacts(Tree(r),r);
 		    		  //System.out.println("current infer is: "+temp);
-		    		
-		    		for(int i=0;i<temp.size();i++){
-						idb.addAll(temp.get(i));
-		    		  }
+
+					  for (ArrayList<Fact> facts : temp) {
+						  idb.addAll(facts);
+					  }
 		    	  }
 //		    	  System.out.println("idb is: "+idb);
 		    	  //System.out.println("---------------------------");
