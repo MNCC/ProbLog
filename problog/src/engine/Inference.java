@@ -3,12 +3,8 @@ package engine;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Stack;
 
 import com.google.errorprone.annotations.Var;
 import dataparser.dlParser;

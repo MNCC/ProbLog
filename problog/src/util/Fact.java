@@ -1,7 +1,5 @@
 package util;
 
-import java.util.ArrayList;
-
 public class Fact {
 
 	   public String predicate;
