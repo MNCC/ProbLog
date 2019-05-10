@@ -711,9 +711,7 @@ public class AdInference {
 		    		  temp=inferFacts(Tree(r),r);
 		    		  //System.out.println("current infer is: "+temp);
 		    		  for(int i=0;i<temp.size();i++){
-		    		  for(Fact f:temp.get(i)){
-		    			  idb.add(f);
-		    		  }
+						  idb.addAll(temp.get(i));
 		    		  }
 		    	  }
 //		    	  for(Fact f:idb){
@@ -750,9 +748,7 @@ public class AdInference {
 		    		  for(int i=0;i<fs.size();i++){
 		    			  ArrayList<ArrayList<Fact>> temp1=fs.get(i);
 		    			  for(int j=0;j<temp1.size();j++){
-		    				  for(Fact f:temp1.get(j)){
-		    					  idb.add(f);
-		    				  }
+							  idb.addAll(temp1.get(j));
 		    			  }
 		    		  }
 		    	  }

@@ -353,9 +353,7 @@ public class Inference {
 		    		  //System.out.println("current infer is: "+temp);
 		    		
 		    		for(int i=0;i<temp.size();i++){
-		    		  for(Fact f:temp.get(i)){
-		    			  idb.add(f);
-		    		  }
+						idb.addAll(temp.get(i));
 		    		  }
 		    	  }
 //		    	  System.out.println("idb is: "+idb);
