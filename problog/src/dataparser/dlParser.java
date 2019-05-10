@@ -103,8 +103,7 @@ public class dlParser {
 		  int hl=str.indexOf("("), hr=str.indexOf(")");
 		  String pre=str.substring(0, hl);
 		  String[] val=str.substring(hl+1,hr).split(",");
-		  Literal l=new Literal(pre,val);
-		  return l;
+		  return new Literal(pre,val);
 		  
 	}
    public void parseData(boolean hasPro){
@@ -165,9 +164,8 @@ public class dlParser {
 		    		  
 		    		  if(hasPro){
 		    		  int third=s.indexOf(":");
-		    		  double pro=Double.parseDouble(s.substring(third+1, last+2).trim());
 		    		  //System.out.println(s.substring(third, last).trim());
-		    		  f.pro=pro;
+		    		  f.pro=Double.parseDouble(s.substring(third+1, last+2).trim());
 		    		  }
 		    		  edb.add(f);
 		    	  }catch(Exception e){
