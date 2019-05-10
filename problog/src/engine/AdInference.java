@@ -197,7 +197,8 @@ public class AdInference {
     	   Fact temp=new Fact(f.predicate,f.constants);
     	   if(hasPro)
     		   temp.pro=f.pro;
-    	   sb.append(f.eString()+":");
+    	   sb.append(f.eString());
+    	   sb.append(":");
     	   for(Fact e:fs){
     		   sb.append(e.eString());
     		   

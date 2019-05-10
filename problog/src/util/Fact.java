@@ -34,11 +34,14 @@ public class Fact {
 	   }
 	  public String eString(){
 		  StringBuilder sb=new StringBuilder();
-	      sb.append(predicate+"(");
+	      sb.append(predicate);
+	      sb.append("(");
 	      for(int i=0;i<constants.length-1;i++){
-	    	  sb.append(constants[i]+",");
+	    	  sb.append(constants[i]);
+	    	  sb.append(",");
 	      }
-	      sb.append(constants[constants.length-1]+")");
+	      sb.append(constants[constants.length-1]);
+	      sb.append(")");
 	      return sb.toString();
 	  } 
 }

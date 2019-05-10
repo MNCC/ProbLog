@@ -21,7 +21,8 @@ public class Rule {
 	   @Override
 	   public String toString(){
 	   		  StringBuilder sb=new StringBuilder();
-		      sb.append(head.toString()+" :-");
+		      sb.append(head.toString());
+		      sb.append(" :-");
 		      for(int i=0;i<bodys.length-1;i++){
 		    	  sb.append(bodys[i].toString());
 		    	  sb.append(" ,");
