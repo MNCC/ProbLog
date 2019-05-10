@@ -20,7 +20,7 @@ class RuleTree{
 	Rule r=null;
 	public RuleTree(Fact val){
 		this.val=val;
-		child=new ArrayList<RuleTree>();
+		child= new ArrayList<>();
 	}
 
 	@Override
@@ -49,18 +49,18 @@ public class AdInference {
  	   database=parser.buildMap();
  	   rules=parser.rules; 
  	   
- 	   trees=new ArrayList<RuleTree>();
- 	   preIDB=new ArrayList<Fact>();
+ 	   trees= new ArrayList<>();
+ 	   preIDB= new ArrayList<>();
  	   
- 	   curIDB=new ArrayList<Fact>();
- 	   factCollections=new HashMap<String,Fact>();
+ 	   curIDB= new ArrayList<>();
+ 	   factCollections= new HashMap<>();
  	   init();
     }
     public void init(){
- 	   factMap=new HashMap<String,ArrayList<Fact>>();
+ 	   factMap= new HashMap<>();
  	   for(Map.Entry<String,Fact> entry:database.entrySet()){
  		   if(!factMap.containsKey(entry.getValue().predicate)){
- 			   ArrayList<Fact> f=new ArrayList<Fact> ();
+ 			   ArrayList<Fact> f= new ArrayList<>();
  			   f.add(entry.getValue());
  			   factMap.put(entry.getValue().predicate, f);
  		   }
@@ -124,7 +124,7 @@ public class AdInference {
 	      
     }
     public void removeDuplicate(RuleTree a){
-    	HashMap<String,RuleTree> map=new HashMap<String,RuleTree>();  
+    	HashMap<String,RuleTree> map= new HashMap<>();
     	for(int i=0;i<a.child.size();i++){
     		if(!map.containsKey(a.child.get(i).val.toString())){
     			map.put(a.child.get(i).val.toString(), a.child.get(i));
@@ -145,7 +145,7 @@ public class AdInference {
  	      }
     }
     public ArrayList<ArrayList<Fact>> inferFacts(ArrayList<ArrayList<Fact>> collection,Rule r){
- 	   ArrayList<ArrayList<Fact>> res=new ArrayList<ArrayList<Fact>>();
+ 	   ArrayList<ArrayList<Fact>> res= new ArrayList<>();
 // 	   System.out.println("----------------------------");
 // 	   System.out.println("collecrions is: "+collection);
 // 	  System.out.println("----------------------------");
@@ -155,7 +155,7 @@ public class AdInference {
  	      return res;
     }
     public Fact infer(Rule r,ArrayList<Fact> fs){
- 	   HashMap<String,String> model=new HashMap<String,String>();
+ 	   HashMap<String,String> model= new HashMap<>();
 	       for(int k=0;k<r.bodys.length;k++){
 	    	  Literal l=r.bodys[k];
 	    	  
@@ -220,10 +220,10 @@ public class AdInference {
     	   return isUpdate;
     }
     public ArrayList<Fact> inferTheFact(Rule r, ArrayList<Fact> fs){
- 	      ArrayList<Fact> res=new ArrayList<Fact>();
+ 	      ArrayList<Fact> res= new ArrayList<>();
 		  @Var int count=fs.size()-1;
  	      while(count>=0){
- 	    	  ArrayList<Fact> temp=new ArrayList<Fact>();
+ 	    	  ArrayList<Fact> temp= new ArrayList<>();
  	    	  for(int i=0;i<r.bodys.length;i++){
 // 	    		  System.out.println();
 // 	    		  System.out.println("infer collections is: "+fs);
@@ -240,7 +240,7 @@ public class AdInference {
     	
     	  
     		   
-    		   ArrayList<ArrayList<Fact>> res=new ArrayList<ArrayList<Fact>>();
+    		   ArrayList<ArrayList<Fact>> res= new ArrayList<>();
     		   @Var RuleTree root=null;
     			   for(RuleTree rt:trees){
     				   if(rt.val.predicate.equals(r.toString())){
@@ -263,7 +263,7 @@ public class AdInference {
     			   for(RuleTree tc:root.child){
     				  
                        //System.out.println("update node: "+tc);    				   
-    				   ArrayList<Fact> temp=new ArrayList<Fact>();
+    				   ArrayList<Fact> temp= new ArrayList<>();
     				   //System.out.println(database);
     				   //System.out.println("curFact is: "+curFact);
     				   //System.out.println("the child of "+tc+" is "+tc.child);
@@ -297,7 +297,7 @@ public class AdInference {
  	   String[] s=new String[1];
  	   s[0]="root";
  	   Fact f=new Fact(r.toString(),s);
- 	   HashMap<String,String> model=new HashMap<String,String>();
+ 	   HashMap<String,String> model= new HashMap<>();
  	   RuleTree a=new RuleTree(f);
  	   a.r=r;
  	   buildTree(0,r,model,a);
@@ -305,9 +305,9 @@ public class AdInference {
  	   
  	   //System.out.println(a.child.size());
  	   //printTree(a);
- 	   ArrayList<ArrayList<Fact>> collection=new ArrayList<ArrayList<Fact>>();
+ 	   ArrayList<ArrayList<Fact>> collection= new ArrayList<>();
  	   for(int i=0;i<a.child.size();i++){
- 		   ArrayList<Fact> temp=new ArrayList<Fact>();
+ 		   ArrayList<Fact> temp= new ArrayList<>();
  		   dfsTree(1,a.child.get(i),temp,r);
  		   
  		   collection.add(temp);
@@ -323,7 +323,7 @@ public class AdInference {
     	   rt.par=node;
     	   if(depth<r.bodys.length-1){
     		   Literal curGoal=r.bodys[depth];
-    		   HashMap<String,String> curModel=new HashMap<String,String>();
+    		   HashMap<String,String> curModel= new HashMap<>();
 //    		   System.out.println("curGoal is: "+curGoal);
 //    		   System.out.println("curFact is: "+newFact);
     		   for(int i=0;i<newFact.constants.length;i++){
@@ -344,7 +344,7 @@ public class AdInference {
 //    			   System.out.println("curGoal is: "+curGoal);
 //    			   System.out.println("curFact is: "+newFact);
     			if(curGoal.predicate.equals(newFact.predicate)){
-    			   HashMap<String,String> model=new HashMap<String,String>();	   
+    			   HashMap<String,String> model= new HashMap<>();
     			   Literal lastMatch=r.bodys[depth-1];
     			   Fact lastFact=node.val;
     			   //System.out.println("curGoal is: "+curGoal+" last match is "+lastMatch+" last fact is "+lastFact);
@@ -402,7 +402,7 @@ public class AdInference {
      	    	  if(canMatch){
 //     	    		  System.out.println("is match!");
 //     	    		  System.out.println(lastFact+" match with: "+f);
-     	    		  HashMap<String,String> curModel=new HashMap<String,String>();
+     	    		  HashMap<String,String> curModel= new HashMap<>();
      	    		  for(int i=0;i<f.constants.length;i++){
      	    			  if(!curModel.containsKey(curGoal.variables[i].trim()))
      	    				  curModel.put(curGoal.variables[i].trim(), f.constants[i].trim());
@@ -456,15 +456,15 @@ public class AdInference {
 		      }
 	   }
 	   public ArrayList<Fact> dealIDB(ArrayList<Fact> idb){
-		      HashMap<String,ArrayList<Fact>> map=new HashMap<String,ArrayList<Fact>>();
+		      HashMap<String,ArrayList<Fact>> map= new HashMap<>();
 		      for(Fact f:idb){
 		    	  if(!map.containsKey(f.eString())){
-		    		  ArrayList<Fact> fs=new ArrayList<Fact>();
+		    		  ArrayList<Fact> fs= new ArrayList<>();
 		    		  map.put(f.eString(), fs);
 		    	  }
 		    	  map.get(f.eString()).add(f);
 		      }
-		      ArrayList<Fact> res=new ArrayList<Fact>();
+		      ArrayList<Fact> res= new ArrayList<>();
 		      for(Map.Entry<String,ArrayList<Fact>> entry:map.entrySet()){
 		    	  res.add(combineFacts(entry.getValue()));
 		      }
@@ -491,10 +491,10 @@ public class AdInference {
  	     
 	   }
 	   public ArrayList<Fact> dupFactRemove(@Var ArrayList<Fact> idb){
-		   HashMap<String,Fact> fs=new HashMap<String,Fact>();
-		   ArrayList<Fact> res=new ArrayList<Fact>();
+		   HashMap<String,Fact> fs= new HashMap<>();
+		   ArrayList<Fact> res= new ArrayList<>();
 		   idb=dealIDB(idb);
-		   @Var ArrayList<Fact> pfs=new ArrayList<Fact>();
+		   @Var ArrayList<Fact> pfs= new ArrayList<>();
 		   for(Map.Entry<String, Fact> entry:factCollections.entrySet()){
 		    	  
 		    	  Fact f=new Fact(entry.getValue().predicate,entry.getValue().constants);
@@ -542,7 +542,7 @@ public class AdInference {
 ////		      System.out.println("doing update :"+fs);
 ////		      System.out.println("idb is: "+idb);
 //		      idb=dupFactRemove(idb);
-		      ArrayList<Fact> newF=new ArrayList<Fact>();
+		      ArrayList<Fact> newF= new ArrayList<>();
 		      for(Fact f:idb){
 		    	  if(!database.containsKey(f.eString())){
 		    		  //System.out.println("update f: "+fs.get(f.eString()));
@@ -554,7 +554,7 @@ public class AdInference {
 		    		  newF.add(f);
 		    		  
 		    	      if(!factMap.containsKey(f.predicate)){
-		    		      ArrayList<Fact> temp=new ArrayList<Fact>();
+		    		      ArrayList<Fact> temp= new ArrayList<>();
 		    		      //System.out.println("update new f in db: "+fs.get(f.eString()));
 		    		      temp.add(f);
 		    		      factMap.put(f.predicate, temp);
@@ -626,11 +626,11 @@ public class AdInference {
 	   }
 	   public boolean semi_update(){
     	      @Var boolean isChange=false;
-		      ArrayList<Fact> newIDB=new ArrayList<Fact>();
-		      HashMap<String,Fact> map=new HashMap<String,Fact>();
+		      ArrayList<Fact> newIDB= new ArrayList<>();
+		      HashMap<String,Fact> map= new HashMap<>();
 		      //System.out.println("preIDB is: "+preIDB);
 		      //System.out.println("before update curIDB is: "+curIDB);
-		   	  @Var ArrayList<Fact> temp=new ArrayList<Fact>();
+		   	  @Var ArrayList<Fact> temp= new ArrayList<>();
 		      temp=(ArrayList<Fact>) dealIDB(curIDB).clone();
 		      
 		    	  
@@ -700,14 +700,14 @@ public class AdInference {
 		    	  
 			      //System.out.println("curIDB is: "+curIDB);
 		    	  isupdate=false;
-				  @Var ArrayList<Fact> idb=new ArrayList<Fact>();
-				  @Var ArrayList<Fact> lastIDB=new ArrayList<Fact>();
+				  @Var ArrayList<Fact> idb= new ArrayList<>();
+				  @Var ArrayList<Fact> lastIDB= new ArrayList<>();
 		    	  lastIDB=(ArrayList<Fact>) curIDB.clone();
 		    	  //System.out.println("preIDB is: "+lastIDB);
 		    	  
 		    	  if(count==1){
 		    	  for(Rule r:rules){
-					  @Var ArrayList<ArrayList<Fact>> temp=new ArrayList<ArrayList<Fact>>();
+					  @Var ArrayList<ArrayList<Fact>> temp= new ArrayList<>();
 		    		  //temp=(ArrayList<Fact>) findAllMatch(r,false).clone();
 		    		  temp=inferFacts(Tree(r),r);
 		    		  //System.out.println("current infer is: "+temp);
@@ -738,10 +738,10 @@ public class AdInference {
 //		    	  }
 		    	  }
 		    	  else{
-		    		  ArrayList<ArrayList<ArrayList<Fact>>> fs=new ArrayList<ArrayList<ArrayList<Fact>>>();
+		    		  ArrayList<ArrayList<ArrayList<Fact>>> fs= new ArrayList<>();
 		    		  for(Fact f:curIDB){
 		    			  for(Rule r:rules){
-							  @Var ArrayList<ArrayList<Fact>> temp=new ArrayList<ArrayList<Fact>>();
+							  @Var ArrayList<ArrayList<Fact>> temp= new ArrayList<>();
 		    				  temp=semiTree(f,r);
 		    				  fs.add(temp);
 		    			  }

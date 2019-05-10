@@ -17,9 +17,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class dlParser {
     
-    final ArrayList<String> dataSentence=new ArrayList<String>();
-    public final ArrayList<Fact> edb=new ArrayList<Fact>();
-    public final ArrayList<Rule> rules=new ArrayList<Rule>();
+    final ArrayList<String> dataSentence= new ArrayList<>();
+    public final ArrayList<Fact> edb= new ArrayList<>();
+    public final ArrayList<Rule> rules= new ArrayList<>();
 	public void dataReader(String textName) throws IOException{
 		
 		try (BufferedReader br = Files.newBufferedReader(Paths.get(System.getProperty("user.dir")+textName), UTF_8)) {
@@ -31,7 +31,7 @@ public class dlParser {
 	}
 	public HashMap<String,Fact> buildMap(){
 		
-		HashMap<String,Fact> res=new HashMap<String,Fact>();
+		HashMap<String,Fact> res= new HashMap<>();
 		for(Fact f:edb){
 			if(!res.containsKey(f.eString()))
 				res.put(f.eString(), f);

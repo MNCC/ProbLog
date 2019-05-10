@@ -18,7 +18,7 @@ class AnwserTree{
 	  final ArrayList<AnwserTree> child;
 	  public AnwserTree(Fact curAnwser){
 		  this.curAnwser=curAnwser;
-		  child=new ArrayList<AnwserTree>();
+		  child= new ArrayList<>();
 		 
 	  }
 
@@ -46,10 +46,10 @@ public class Inference {
     	   init();
        }
        public void init(){
-    	   factMap=new HashMap<String,ArrayList<Fact>>();
+    	   factMap= new HashMap<>();
     	   for(Map.Entry<String,Fact> entry:database.entrySet()){
     		   if(!factMap.containsKey(entry.getValue().predicate)){
-    			   ArrayList<Fact> f=new ArrayList<Fact> ();
+    			   ArrayList<Fact> f= new ArrayList<>();
     			   f.add(entry.getValue());
     			   factMap.put(entry.getValue().predicate, f);
     		   }
@@ -86,14 +86,14 @@ public class Inference {
     	      }
        }
        public ArrayList<ArrayList<Fact>> inferFacts(ArrayList<ArrayList<Fact>> collection,Rule r){
-    	   ArrayList<ArrayList<Fact>> res=new ArrayList<ArrayList<Fact>>();
+    	   ArrayList<ArrayList<Fact>> res= new ArrayList<>();
 		   for (ArrayList<Fact> facts : collection)
 			   if (!facts.isEmpty())
 				   res.add(inferTheFact(r, facts));
     	      return res;
        }
        public Fact infer(Rule r,ArrayList<Fact> fs){
-    	   HashMap<String,String> model=new HashMap<String,String>();
+    	   HashMap<String,String> model= new HashMap<>();
  	       for(int k=0;k<r.bodys.length;k++){
  	    	  Literal l=r.bodys[k];
  	    	  
@@ -124,10 +124,10 @@ public class Inference {
  	      return f;
        }
        public ArrayList<Fact> inferTheFact(Rule r, ArrayList<Fact> fs){
-    	      ArrayList<Fact> res=new ArrayList<Fact>();
+    	      ArrayList<Fact> res= new ArrayList<>();
     	      @Var int count=fs.size()-1;
     	      while(count>=0){
-    	    	  ArrayList<Fact> temp=new ArrayList<Fact>();
+    	    	  ArrayList<Fact> temp= new ArrayList<>();
     	    	  for(int i=0;i<r.bodys.length;i++){
     	    		  temp.add(fs.get(count-i));
     	    	  }
@@ -140,14 +140,14 @@ public class Inference {
     	   String[] s=new String[1];
     	   s[0]="root";
     	   Fact f=new Fact("root",s);
-    	   HashMap<String,String> model=new HashMap<String,String>();
+    	   HashMap<String,String> model= new HashMap<>();
     	   AnwserTree a=new AnwserTree(f);
     	   buildTree(0,r,model,a);
     	   //System.out.println(a.child.size());
     	   //printTree(a);
-    	   ArrayList<ArrayList<Fact>> collection=new ArrayList<ArrayList<Fact>>();
+    	   ArrayList<ArrayList<Fact>> collection= new ArrayList<>();
     	   for(int i=0;i<a.child.size();i++){
-    		   ArrayList<Fact> temp=new ArrayList<Fact>();
+    		   ArrayList<Fact> temp= new ArrayList<>();
     		   dfsTree(1,a.child.get(i),temp,r);
     		   
     		   collection.add(temp);
@@ -201,7 +201,7 @@ public class Inference {
         	    	  if(canMatch){
 //        	    		  System.out.println("is match!");
 //        	    		  System.out.println(lastFact+" match with: "+f);
-        	    		  HashMap<String,String> curModel=new HashMap<String,String>();
+        	    		  HashMap<String,String> curModel= new HashMap<>();
         	    		  for(int i=0;i<f.constants.length;i++){
         	    			  if(!curModel.containsKey(curGoal.variables[i].trim()))
         	    				  curModel.put(curGoal.variables[i].trim(), f.constants[i].trim());
@@ -253,15 +253,15 @@ public class Inference {
 		      }
 	   }
 	   public ArrayList<Fact> dealIDB(ArrayList<Fact> idb){
-		      HashMap<String,ArrayList<Fact>> map=new HashMap<String,ArrayList<Fact>>();
+		      HashMap<String,ArrayList<Fact>> map= new HashMap<>();
 		      for(Fact f:idb){
 		    	  if(!map.containsKey(f.eString())){
-		    		  ArrayList<Fact> fs=new ArrayList<Fact>();
+		    		  ArrayList<Fact> fs= new ArrayList<>();
 		    		  map.put(f.eString(), fs);
 		    	  }
 		    	  map.get(f.eString()).add(f);
 		      }
-		      ArrayList<Fact> res=new ArrayList<Fact>();
+		      ArrayList<Fact> res= new ArrayList<>();
 		      for(Map.Entry<String,ArrayList<Fact>> entry:map.entrySet()){
 		    	  res.add(combineFacts(entry.getValue()));
 		      }
@@ -279,7 +279,7 @@ public class Inference {
 		    		  res=true;
 		    	  
 		    	      if(!factMap.containsKey(f.predicate)){
-		    		      ArrayList<Fact> temp=new ArrayList<Fact>();
+		    		      ArrayList<Fact> temp= new ArrayList<>();
 		    		      temp.add(f);
 		    		      factMap.put(f.predicate, temp);
 		    		  
@@ -344,10 +344,10 @@ public class Inference {
 		      while(isupdate){
 		    	  //System.out.println("curEDB is: "+factMap);
 		    	  isupdate=false;
-				  @Var ArrayList<Fact> idb=new ArrayList<Fact>();
+				  @Var ArrayList<Fact> idb= new ArrayList<>();
 		    	  
 		    	  for(Rule r:rules){
-					  @Var ArrayList<ArrayList<Fact>> temp=new ArrayList<ArrayList<Fact>>();
+					  @Var ArrayList<ArrayList<Fact>> temp= new ArrayList<>();
 		    		  //temp=(ArrayList<Fact>) findAllMatch(r,false).clone();
 		    		  temp=inferFacts(Tree(r),r);
 		    		  //System.out.println("current infer is: "+temp);
