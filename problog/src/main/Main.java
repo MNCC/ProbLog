@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +17,12 @@ import engine.AdInference;
 import engine.Inference;
 import util.Fact;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		Scanner sc=new Scanner(System.in);
+		Scanner sc=new Scanner(System.in, UTF_8.name());
 		while(true){
 			System.out.println("please choose naive or semi_naive, if naive, please enter (n), semi_naive is (s)");
 			String way=sc.nextLine().toLowerCase();
@@ -96,14 +100,14 @@ public class Main {
 	}
 
 	public static void writeFile(HashMap<String,ArrayList<Fact>> map) throws IOException{
-		BufferedWriter bw=new BufferedWriter(new FileWriter(System.getProperty("user.dir")+File.separator+"output.text"));
-		for(Map.Entry<String,ArrayList<Fact>> entry:map.entrySet()){
-			ArrayList<Fact> temp=entry.getValue();
-			for(Fact f:temp){
-				bw.write(f.toString());
-				bw.newLine();
+		try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(System.getProperty("user.dir")+File.separator+"output.text"), UTF_8)) {
+			for (Map.Entry<String, ArrayList<Fact>> entry : map.entrySet()) {
+				ArrayList<Fact> temp = entry.getValue();
+				for (Fact f : temp) {
+					bw.write(f.toString());
+					bw.newLine();
+				}
 			}
 		}
-		bw.close();
 	}
 }

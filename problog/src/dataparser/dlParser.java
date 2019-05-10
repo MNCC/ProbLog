@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,6 +14,8 @@ import util.Fact;
 import util.Literal;
 import util.Rule;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class dlParser {
     
     ArrayList<String> dataSentence=new ArrayList<String>();
@@ -19,12 +23,12 @@ public class dlParser {
     public ArrayList<Rule> rules=new ArrayList<Rule>();
 	public void dataReader(String textName) throws IOException{
 		
-		BufferedReader br=new BufferedReader(new FileReader(System.getProperty("user.dir")+textName));
-		@Var String line="";
-		while((line=br.readLine())!=null)
-			dataSentence.add(line);
-		br.close();
-		
+		try (BufferedReader br = Files.newBufferedReader(Paths.get(System.getProperty("user.dir")+textName), UTF_8)) {
+			@Var String line = "";
+			while ((line = br.readLine()) != null) {
+				dataSentence.add(line);
+			}
+		}
 	}
 	public HashMap<String,Fact> buildMap(){
 		
