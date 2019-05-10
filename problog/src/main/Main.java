@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 
+import com.google.errorprone.annotations.Var;
 import engine.AdInference;
 import engine.Inference;
 import util.Fact;
@@ -29,7 +30,7 @@ public class Main {
 			String max=sc.nextLine().toLowerCase();
 			System.out.println("do you want production function for conjunction? enter(y?): ");
 			String production=sc.nextLine().toLowerCase();
-			boolean hasPro=false;
+			@Var boolean hasPro=false;
 			
 			if(pro.equals("y"))
 				hasPro=true;
@@ -66,7 +67,7 @@ public class Main {
       System.out.println(i.factMap);
       writeFile(i.factMap);
       System.out.println("use time: "+(currentTime2-currentTime1)+" ms");
-		 int size=0;
+		@Var int size=0;
 		 for(Map.Entry<String, ArrayList<Fact>> entry:i.factMap.entrySet()){
 	        	size=size+entry.getValue().size();
 	        }
@@ -87,7 +88,7 @@ public class Main {
 	        System.out.println(ad.factMap);
 	        writeFile(ad.factMap);
 	        System.out.println("use time: "+(currentTime2-currentTime1)+" ms");
-	        int size=0;
+			@Var int size=0;
 	        for(Map.Entry<String, ArrayList<Fact>> entry:ad.factMap.entrySet()){
 	        	size=size+entry.getValue().size();
 	        }

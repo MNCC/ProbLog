@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
 
+import com.google.errorprone.annotations.Var;
 import dataparser.dlParser;
 import util.Fact;
 import util.Literal;
@@ -24,6 +25,8 @@ class AnwserTree{
 		  child=new ArrayList<AnwserTree>();
 		 
 	  }
+
+	  @Override
 	  public String toString(){
 		  return curAnwser.toString();
 	  }
@@ -59,7 +62,7 @@ public class Inference {
     	   }
        }
 
-       public void getOnePath(AnwserTree a,ArrayList<Fact> fs){
+       public void getOnePath(@Var AnwserTree a, ArrayList<Fact> fs){
     	      while(!a.curAnwser.predicate.equals("root")){
     	    	  fs.add(a.curAnwser);
     	    	  a=a.par;
@@ -116,7 +119,7 @@ public class Inference {
  	      }
  	      Fact f=new Fact(pre,cons);
  	      if(hasPro){
- 	    	  double p=getMin(fs);
+			  @Var double p=getMin(fs);
  	    	  if(useProduction)
  	    		  p=getProduction(fs);
  	    	  f.pro=p*r.pro;
@@ -126,7 +129,7 @@ public class Inference {
        }
        public ArrayList<Fact> inferTheFact(Rule r, ArrayList<Fact> fs){
     	      ArrayList<Fact> res=new ArrayList<Fact>();
-    	      int count=fs.size()-1;
+    	      @Var int count=fs.size()-1;
     	      while(count>=0){
     	    	  ArrayList<Fact> temp=new ArrayList<Fact>();
     	    	  for(int i=0;i<r.bodys.length;i++){
@@ -173,7 +176,7 @@ public class Inference {
         	    	  
         	      
         	      for(Fact f:factMap.get(curGoal.predicate)){
-        	    	  boolean canMatch=true;
+					  @Var boolean canMatch=true;
 //        	    	  if(f.toString().equals(lastFact))
 //        	    		  continue;
         	    	  for(int i=0;i<f.constants.length;i++){
@@ -225,7 +228,7 @@ public class Inference {
        }
 
 	   public double getMin(ArrayList<Fact> f){
-		      double min=1;
+       	      @Var double min=1;
 		      for(int i=0;i<f.size();i++){
 		    	  if(f.get(i).pro<min)
 		    		  min=f.get(i).pro;
@@ -234,19 +237,9 @@ public class Inference {
 		      
 	   }
 	   public double getProduction(ArrayList<Fact> f){
-		      double res=1;
+		      @Var double res=1;
 		      for(int i=0;i<f.size();i++){
 		    	 res=res*f.get(i).pro;
-		      }
-		      return res;
-	   }
-	   public Fact[] matchFact(Rule r){
-		      Fact[] res=new Fact[r.bodys.length];
-		      for(int i=0;i<r.bodys.length;i++){
-		    	  if(!database.containsKey(r.bodys[i]))
-		    		  return null;
-		    	  else
-		    		  res[i]=database.get(r.bodys[i]);
 		      }
 		      return res;
 	   }
@@ -254,7 +247,7 @@ public class Inference {
 		      if(fs.size()==1||!hasPro)
 		    	  return fs.get(0);
 		      else{
-		    	  double sum=0;
+				  @Var double sum=0;
 		    	  for(Fact f:fs){
 		    		  sum=calPro(sum,f.pro);
 		    	  }
@@ -280,8 +273,8 @@ public class Inference {
 		      
 		      
 	   }
-	   public boolean isUpdate(ArrayList<Fact> idb,int count){
-		      boolean res=false;
+	   public boolean isUpdate(@Var ArrayList<Fact> idb,int count){
+		      @Var boolean res=false;
 		      idb=dealIDB(idb);
 		      
 		      for(Fact f:idb){
@@ -347,18 +340,18 @@ public class Inference {
 		   }
 	   }
 	   public void naive(){
-		      
-		      boolean isupdate=true;
+
+       	      @Var boolean isupdate=true;
 		      System.out.println("edb: "+factMap);
 	    	  System.out.println("rules is "+rules);
-	    	  int count=1;
+	    	  @Var int count=1;
 		      while(isupdate){
 		    	  //System.out.println("curEDB is: "+factMap);
 		    	  isupdate=false;
-		    	  ArrayList<Fact> idb=new ArrayList<Fact>();
+				  @Var ArrayList<Fact> idb=new ArrayList<Fact>();
 		    	  
 		    	  for(Rule r:rules){
-		    		  ArrayList<ArrayList<Fact>> temp=new ArrayList<ArrayList<Fact>>();
+					  @Var ArrayList<ArrayList<Fact>> temp=new ArrayList<ArrayList<Fact>>();
 		    		  //temp=(ArrayList<Fact>) findAllMatch(r,false).clone();
 		    		  temp=inferFacts(Tree(r),r);
 		    		  //System.out.println("current infer is: "+temp);

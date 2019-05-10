@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.errorprone.annotations.Var;
 import util.Fact;
 import util.Literal;
 import util.Rule;
@@ -19,7 +20,7 @@ public class dlParser {
 	public void dataReader(String textName) throws IOException{
 		
 		BufferedReader br=new BufferedReader(new FileReader(System.getProperty("user.dir")+textName));
-		String line="";
+		@Var String line="";
 		while((line=br.readLine())!=null)
 			dataSentence.add(line);
 		br.close();
@@ -103,8 +104,8 @@ public class dlParser {
 		  
 	}
    public void parseData(boolean hasPro){
-	   int line=0;   
-	   for(String s:dataSentence){
+	   @Var int line=0;
+	   for(@Var String s:dataSentence){
 		      if(!s.contains("."))
 		    	  continue;
 		      if(s.contains(":-")){
@@ -112,9 +113,9 @@ public class dlParser {
 		    		  String[] str=s.split(":-");
 		    		  String head=str[0].trim();
 		    		  String body=str[1].trim();
-		    		  Literal h=generateLiteral(head); // generate a literal from string
-		    		  int last=body.indexOf(".");
-		    		  double pro=1;
+					  @Var Literal h=generateLiteral(head); // generate a literal from string
+					  @Var int last=body.indexOf(".");
+					  @Var double pro=1;
 		    		  if(hasPro){
 		    			  last=body.indexOf(":");
 		    			  pro=Double.parseDouble(body.substring(last+1, body.indexOf(".")+2).trim());

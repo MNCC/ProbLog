@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.errorprone.annotations.Var;
 import dataparser.dlParser;
 import util.Fact;
 import util.Literal;
@@ -76,7 +77,7 @@ public class AdInference {
  	   }
     }
 
-    public void getOnePath(RuleTree a,ArrayList<Fact> fs){
+    public void getOnePath(@Var RuleTree a,ArrayList<Fact> fs){
  	      while(!a.val.predicate.contains(":-")){
  	    	  fs.add(a.val);
  	    	  a=a.par;
@@ -175,7 +176,7 @@ public class AdInference {
 	      }
 	      Fact f=new Fact(pre,cons);
 	      if(hasPro){
-	    	  double p=getMin(fs);
+			  @Var double p=getMin(fs);
 	    	  if(useMax)
 	    		  p=getProduction(fs);
 	    	  f.pro=p*r.pro;
@@ -190,7 +191,7 @@ public class AdInference {
 	      return f;
     }
     public boolean updateCollection(Fact f, ArrayList<Fact> fs){
-    	   boolean isUpdate=false;
+    	   @Var boolean isUpdate=false;
     	   StringBuffer sb=new StringBuffer();
     	   Fact temp=new Fact(f.predicate,f.constants);
     	   if(hasPro)
@@ -218,7 +219,7 @@ public class AdInference {
     }
     public ArrayList<Fact> inferTheFact(Rule r, ArrayList<Fact> fs){
  	      ArrayList<Fact> res=new ArrayList<Fact>();
- 	      int count=fs.size()-1;
+		  @Var int count=fs.size()-1;
  	      while(count>=0){
  	    	  ArrayList<Fact> temp=new ArrayList<Fact>();
  	    	  for(int i=0;i<r.bodys.length;i++){
@@ -238,7 +239,7 @@ public class AdInference {
     	  
     		   
     		   ArrayList<ArrayList<Fact>> res=new ArrayList<ArrayList<Fact>>();
-    		   RuleTree root=null;
+    		   @Var RuleTree root=null;
     			   for(RuleTree rt:trees){
     				   if(rt.val.predicate.equals(r.toString())){
     					   root=rt;
@@ -349,7 +350,7 @@ public class AdInference {
     				   if(!model.containsKey(lastMatch.variables[i].trim()))
     					   model.put(lastMatch.variables[i].trim(), lastFact.constants[i].trim());
     			   }
-    			   boolean isMatch=true;
+    			   @Var boolean isMatch=true;
     			   for(int i=0;i<curGoal.variables.length;i++){
     				   if(model.containsKey(curGoal.variables[i].trim())&&!model.get(curGoal.variables[i].trim()).equals(newFact.constants[i].trim()))
     				   {
@@ -383,7 +384,7 @@ public class AdInference {
      	    	  
      	      
      	      for(Fact f:factMap.get(curGoal.predicate)){
-     	    	  boolean canMatch=true;
+				  @Var boolean canMatch=true;
 
      	    	  for(int i=0;i<f.constants.length;i++){
      	    		  
@@ -424,7 +425,7 @@ public class AdInference {
     }
 
 	   public double getMin(ArrayList<Fact> f){
-		      double min=1;
+    	      @Var double min=1;
 		      for(int i=0;i<f.size();i++){
 		    	  if(f.get(i).pro<min)
 		    		  min=f.get(i).pro;
@@ -433,19 +434,9 @@ public class AdInference {
 		      
 	   }
 	   public double getProduction(ArrayList<Fact> f){
-		      double res=1;
+    		  @Var double res=1;
 		      for(int i=0;i<f.size();i++){
 		    	 res=res*f.get(i).pro;
-		      }
-		      return res;
-	   }
-	   public Fact[] matchFact(Rule r){
-		      Fact[] res=new Fact[r.bodys.length];
-		      for(int i=0;i<r.bodys.length;i++){
-		    	  if(!database.containsKey(r.bodys[i]))
-		    		  return null;
-		    	  else
-		    		  res[i]=database.get(r.bodys[i]);
 		      }
 		      return res;
 	   }
@@ -453,7 +444,7 @@ public class AdInference {
 		      if(fs.size()==1||!hasPro)
 		    	  return fs.get(0);
 		      else{
-		    	  double sum=0;
+				  @Var double sum=0;
 		    	  for(Fact f:fs){
 		    		  sum=calPro(sum,f.pro);
 		    	  }
@@ -481,7 +472,7 @@ public class AdInference {
 	   }
 	   public void trim(Fact f){
 		   for(Rule r:rules){
- 	    	  RuleTree root=null;
+		   	  @Var RuleTree root=null;
  	    	  for(RuleTree rt:trees){
  	    		  if(rt.val.predicate.equals(r.toString())){
  	    			  root=rt;
@@ -497,11 +488,11 @@ public class AdInference {
  	    	 }
  	     
 	   }
-	   public ArrayList<Fact> dupFactRemove(ArrayList<Fact> idb){
+	   public ArrayList<Fact> dupFactRemove(@Var ArrayList<Fact> idb){
 		   HashMap<String,Fact> fs=new HashMap<String,Fact>();
 		   ArrayList<Fact> res=new ArrayList<Fact>();
 		   idb=dealIDB(idb);
-		   ArrayList<Fact> pfs=new ArrayList<Fact>();
+		   @Var ArrayList<Fact> pfs=new ArrayList<Fact>();
 		   for(Map.Entry<String, Fact> entry:factCollections.entrySet()){
 		    	  
 		    	  Fact f=new Fact(entry.getValue().predicate,entry.getValue().constants);
@@ -521,7 +512,7 @@ public class AdInference {
 		  return res; 
 	   }
 	   public boolean isUpdate(ArrayList<Fact> idb,int count){
-		      boolean res=false;
+		   		@Var boolean res=false;
 //		      ArrayList<Fact> pfs=new ArrayList<Fact>();
 //		      
 //		      for(Map.Entry<String, Fact> entry:factCollections.entrySet()){
@@ -632,12 +623,12 @@ public class AdInference {
 			  curIDB.remove(i);
 	   }
 	   public boolean semi_update(){
-		      boolean isChange=false;
+    	      @Var boolean isChange=false;
 		      ArrayList<Fact> newIDB=new ArrayList<Fact>();
 		      HashMap<String,Fact> map=new HashMap<String,Fact>();
 		      //System.out.println("preIDB is: "+preIDB);
 		      //System.out.println("before update curIDB is: "+curIDB);
-		      ArrayList<Fact> temp=new ArrayList<Fact>();
+		   	  @Var ArrayList<Fact> temp=new ArrayList<Fact>();
 		      temp=(ArrayList<Fact>) dealIDB(curIDB).clone();
 		      
 		    	  
@@ -696,25 +687,25 @@ public class AdInference {
               
 	   }
 	   public void semi_naive(){
-		      
-		      boolean isupdate=true;
+
+    		  @Var boolean isupdate=true;
 		      System.out.println("edb: "+factMap);
 	    	  System.out.println("rules is "+rules);
-	    	  int count=1;
+	    	  @Var int count=1;
 		      while(isupdate){
 		    	  semiUpdate=false;
 		    	  //System.out.println("curEDB is: "+factMap);
 		    	  
 			      //System.out.println("curIDB is: "+curIDB);
 		    	  isupdate=false;
-		    	  ArrayList<Fact> idb=new ArrayList<Fact>();
-		    	  ArrayList<Fact> lastIDB=new ArrayList<Fact>();
+				  @Var ArrayList<Fact> idb=new ArrayList<Fact>();
+				  @Var ArrayList<Fact> lastIDB=new ArrayList<Fact>();
 		    	  lastIDB=(ArrayList<Fact>) curIDB.clone();
 		    	  //System.out.println("preIDB is: "+lastIDB);
 		    	  
 		    	  if(count==1){
 		    	  for(Rule r:rules){
-		    		  ArrayList<ArrayList<Fact>> temp=new ArrayList<ArrayList<Fact>>();
+					  @Var ArrayList<ArrayList<Fact>> temp=new ArrayList<ArrayList<Fact>>();
 		    		  //temp=(ArrayList<Fact>) findAllMatch(r,false).clone();
 		    		  temp=inferFacts(Tree(r),r);
 		    		  //System.out.println("current infer is: "+temp);
@@ -750,7 +741,7 @@ public class AdInference {
 		    		  ArrayList<ArrayList<ArrayList<Fact>>> fs=new ArrayList<ArrayList<ArrayList<Fact>>>();
 		    		  for(Fact f:curIDB){
 		    			  for(Rule r:rules){
-		    				  ArrayList<ArrayList<Fact>> temp=new ArrayList<ArrayList<Fact>>();
+							  @Var ArrayList<ArrayList<Fact>> temp=new ArrayList<ArrayList<Fact>>();
 		    				  temp=semiTree(f,r);
 		    				  fs.add(temp);
 		    			  }
