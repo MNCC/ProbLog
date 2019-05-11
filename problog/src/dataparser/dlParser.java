@@ -19,7 +19,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @CheckReturnValue
 public class dlParser {
     
-    final ArrayList<String> dataSentence= new ArrayList<>();
+    private final ArrayList<String> dataSentence= new ArrayList<>();
     public final ArrayList<Fact> edb= new ArrayList<>();
     public final ArrayList<Rule> rules= new ArrayList<>();
 	public void dataReader(String textName) throws IOException{
@@ -76,7 +76,7 @@ public class dlParser {
 		   return true;
 	}
 
-	public Literal generateLiteral(String str){
+	private Literal generateLiteral(String str){
 		 
 		  int hl=str.indexOf("("), hr=str.indexOf(")");
 		  String pre=str.substring(0, hl);

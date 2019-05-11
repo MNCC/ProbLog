@@ -59,7 +59,7 @@ public class Main {
 //		System.out.println(ad.factMap);
 
 	}
-	public static void testNaive(String textName,boolean hasPro,String max, String production) throws IOException{
+	private static void testNaive(String textName, boolean hasPro, String max, String production) throws IOException{
       Inference i=new Inference(File.separator+textName,hasPro); // this is naive
       if(max.equals("y"))
     	  i.useMax=true;
@@ -79,7 +79,7 @@ public class Main {
 		 System.out.println("the siez of all facts is: "+size);
 	     
 	}
-	public static void testSemiNaive(String textName,boolean hasPro,String max) throws IOException{
+	private static void testSemiNaive(String textName, boolean hasPro, String max) throws IOException{
 		
 		 AdInference ad=new AdInference(File.separator+textName,hasPro); // this is semi naive
 		 if(max.equals("y"))
@@ -98,7 +98,7 @@ public class Main {
 	        System.out.println("the siez of all facts is: "+size);
 	}
 
-	public static void writeFile(HashMap<String,ArrayList<Fact>> map) throws IOException{
+	private static void writeFile(HashMap<String, ArrayList<Fact>> map) throws IOException{
 		try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(System.getProperty("user.dir")+File.separator+"output.text"), UTF_8)) {
 			for (Map.Entry<String, ArrayList<Fact>> entry : map.entrySet()) {
 				ArrayList<Fact> temp = entry.getValue();

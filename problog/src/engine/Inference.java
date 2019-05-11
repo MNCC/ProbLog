@@ -32,10 +32,10 @@ class AnwserTree{
 
 @CheckReturnValue
 public class Inference {
-       public HashMap<String,Fact> database;
-       final dlParser parser;
-       ArrayList<Rule> rules;
-       boolean hasPro;
+       private HashMap<String,Fact> database;
+       private final dlParser parser;
+       private ArrayList<Rule> rules;
+       private boolean hasPro;
        public HashMap<String,ArrayList<Fact>> factMap;
        public boolean useMax=false;
        public boolean useProduction=false;
@@ -49,7 +49,7 @@ public class Inference {
     	   
     	   init();
        }
-       public void init(){
+       private void init(){
     	   factMap= new HashMap<>();
     	   for(Map.Entry<String,Fact> entry:database.entrySet()){
     		   if(!factMap.containsKey(entry.getValue().predicate)){
@@ -62,14 +62,14 @@ public class Inference {
     	   }
        }
 
-       public void getOnePath(@Var AnwserTree a, ArrayList<Fact> fs){
+       private void getOnePath(@Var AnwserTree a, ArrayList<Fact> fs){
     	      while(!a.curAnwser.predicate.equals("root")){
     	    	  fs.add(a.curAnwser);
     	    	  a=a.par;
     	      }
     	      
        }
-       public void dfsTree(int depth,AnwserTree a,ArrayList<Fact> fs, Rule r){
+       private void dfsTree(int depth, AnwserTree a, ArrayList<Fact> fs, Rule r){
     	      if(depth==r.bodys.length)
     	      {
     	    	  
@@ -83,14 +83,14 @@ public class Inference {
     	      }
        }
 
-       public ArrayList<ArrayList<Fact>> inferFacts(ArrayList<ArrayList<Fact>> collection,Rule r){
+       private ArrayList<ArrayList<Fact>> inferFacts(ArrayList<ArrayList<Fact>> collection, Rule r){
     	   ArrayList<ArrayList<Fact>> res= new ArrayList<>();
 		   for (ArrayList<Fact> facts : collection)
 			   if (!facts.isEmpty())
 				   res.add(inferTheFact(r, facts));
     	      return res;
        }
-       public Fact infer(Rule r,ArrayList<Fact> fs){
+       private Fact infer(Rule r, ArrayList<Fact> fs){
     	   HashMap<String,String> model= new HashMap<>();
  	       for(int k=0;k<r.bodys.length;k++){
  	    	  Literal l=r.bodys[k];
@@ -121,7 +121,7 @@ public class Inference {
  	      //System.out.println("new fact is generate "+f+" from "+fs);
  	      return f;
        }
-       public ArrayList<Fact> inferTheFact(Rule r, ArrayList<Fact> fs){
+       private ArrayList<Fact> inferTheFact(Rule r, ArrayList<Fact> fs){
     	      ArrayList<Fact> res= new ArrayList<>();
     	      @Var int count=fs.size()-1;
     	      while(count>=0){
@@ -134,7 +134,7 @@ public class Inference {
     	      }
     	      return res;
        }
-       public ArrayList<ArrayList<Fact>> Tree(Rule r){
+       private ArrayList<ArrayList<Fact>> Tree(Rule r){
     	   String[] s=new String[1];
     	   s[0]="root";
     	   Fact f=new Fact("root",s);
@@ -153,7 +153,7 @@ public class Inference {
     	   //System.out.println("facts collection is: "+collection+" for the rule"+r);
     	   return collection;
        }
-       public void buildTree(int depth,Rule r,HashMap<String,String> model, AnwserTree parNode){
+       private void buildTree(int depth, Rule r, HashMap<String, String> model, AnwserTree parNode){
     	      if(depth<r.bodys.length){
     	    	  Literal curGoal=r.bodys[depth];
         	      //System.out.println(curGoal+"the depth is"+depth);
@@ -220,7 +220,7 @@ public class Inference {
     	      }
        }
 
-	   public double getMin(ArrayList<Fact> f){
+	   private double getMin(ArrayList<Fact> f){
        	      @Var double min=1;
 		   for (Fact fact : f) {
 			   if (fact.pro < min)
@@ -229,14 +229,14 @@ public class Inference {
 		      return min;
 		      
 	   }
-	   public double getProduction(ArrayList<Fact> f){
+	   private double getProduction(ArrayList<Fact> f){
 		      @Var double res=1;
 		   for (Fact fact : f) {
 			   res = res * fact.pro;
 		   }
 		      return res;
 	   }
-	   public Fact combineFacts(ArrayList<Fact> fs){
+	   private Fact combineFacts(ArrayList<Fact> fs){
 		      if(fs.size()==1||!hasPro)
 		    	  return fs.get(0);
 		      else{
@@ -249,7 +249,7 @@ public class Inference {
 		    	  return res;
 		      }
 	   }
-	   public ArrayList<Fact> dealIDB(ArrayList<Fact> idb){
+	   private ArrayList<Fact> dealIDB(ArrayList<Fact> idb){
 		      HashMap<String,ArrayList<Fact>> map= new HashMap<>();
 		      for(Fact f:idb){
 		    	  if(!map.containsKey(f.eString())){
@@ -266,7 +266,7 @@ public class Inference {
 		      
 		      
 	   }
-	   public boolean isUpdate(@Var ArrayList<Fact> idb,int count){
+	   private boolean isUpdate(@Var ArrayList<Fact> idb, int count){
 		      @Var boolean res=false;
 		      idb=dealIDB(idb);
 		      
@@ -315,7 +315,7 @@ public class Inference {
 		      }
 		      return res;
 	   }
-	   public double calPro(double p1, double p2){
+	   private double calPro(double p1, double p2){
 		   BigDecimal x1=BigDecimal.valueOf(p1);
 		   BigDecimal x2=BigDecimal.valueOf(p2);
 		   if(useMax)

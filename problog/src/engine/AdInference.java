@@ -33,15 +33,15 @@ class RuleTree{
 
 @CheckReturnValue
 public class AdInference {
-	public HashMap<String,Fact> database;
-    final dlParser parser;
-    ArrayList<Rule> rules;
-    boolean hasPro;
+	private HashMap<String,Fact> database;
+    private final dlParser parser;
+    private ArrayList<Rule> rules;
+    private boolean hasPro;
     public HashMap<String,ArrayList<Fact>> factMap;
-    public ArrayList<RuleTree> trees;
-    public ArrayList<Fact> preIDB;
-    public ArrayList<Fact> curIDB;
-    public HashMap<String,Fact> factCollections;
+    private ArrayList<RuleTree> trees;
+    private ArrayList<Fact> preIDB;
+    private ArrayList<Fact> curIDB;
+    private HashMap<String,Fact> factCollections;
     public boolean useMax=false;
 
     public AdInference(String textName,boolean hasPro) throws IOException{
@@ -59,7 +59,7 @@ public class AdInference {
  	   factCollections= new HashMap<>();
  	   init();
     }
-    public void init(){
+    private void init(){
  	   factMap= new HashMap<>();
  	   for(Map.Entry<String,Fact> entry:database.entrySet()){
  		   if(!factMap.containsKey(entry.getValue().predicate)){
@@ -81,14 +81,14 @@ public class AdInference {
  	   }
     }
 
-    public void getOnePath(@Var RuleTree a,ArrayList<Fact> fs){
+    private void getOnePath(@Var RuleTree a, ArrayList<Fact> fs){
  	      while(!a.val.predicate.contains(":-")){
  	    	  fs.add(a.val);
  	    	  a=a.par;
  	      }
  	      
     }
-    public void dfsTree(int depth,RuleTree a,ArrayList<Fact> fs, Rule r){
+    private void dfsTree(int depth, RuleTree a, ArrayList<Fact> fs, Rule r){
  	      if(depth==r.bodys.length)
  	      {
  	    	 
@@ -103,7 +103,7 @@ public class AdInference {
  	    	  }
  	      }
     }
-    public void semiDfs(int depth,RuleTree a,ArrayList<Fact> fs,Fact newFact,Rule r){
+    private void semiDfs(int depth, RuleTree a, ArrayList<Fact> fs, Fact newFact, Rule r){
     	 if(depth<r.bodys.length)
 	      {
 	    	   
@@ -127,7 +127,7 @@ public class AdInference {
 	      
     }
 
-    public ArrayList<ArrayList<Fact>> inferFacts(ArrayList<ArrayList<Fact>> collection,Rule r){
+    private ArrayList<ArrayList<Fact>> inferFacts(ArrayList<ArrayList<Fact>> collection, Rule r){
  	   ArrayList<ArrayList<Fact>> res= new ArrayList<>();
 // 	   System.out.println("----------------------------");
 // 	   System.out.println("collecrions is: "+collection);
@@ -137,7 +137,7 @@ public class AdInference {
 				res.add(inferTheFact(r, facts));
  	      return res;
     }
-    public Fact infer(Rule r,ArrayList<Fact> fs){
+    private Fact infer(Rule r, ArrayList<Fact> fs){
  	   HashMap<String,String> model= new HashMap<>();
 	       for(int k=0;k<r.bodys.length;k++){
 	    	  Literal l=r.bodys[k];
@@ -172,7 +172,7 @@ public class AdInference {
     }
 
     @CanIgnoreReturnValue
-    public boolean updateCollection(Fact f, ArrayList<Fact> fs){
+	private boolean updateCollection(Fact f, ArrayList<Fact> fs){
     	   @Var boolean isUpdate=false;
     	   StringBuilder sb=new StringBuilder();
     	   Fact temp=new Fact(f.predicate,f.constants);
@@ -200,7 +200,7 @@ public class AdInference {
     	   }
     	   return isUpdate;
     }
-    public ArrayList<Fact> inferTheFact(Rule r, ArrayList<Fact> fs){
+    private ArrayList<Fact> inferTheFact(Rule r, ArrayList<Fact> fs){
  	      ArrayList<Fact> res= new ArrayList<>();
 		  @Var int count=fs.size()-1;
  	      while(count>=0){
@@ -216,7 +216,7 @@ public class AdInference {
  	      }
  	      return res;
     }
-    public ArrayList<ArrayList<Fact>> semiTree(Fact curFact,Rule r){
+    private ArrayList<ArrayList<Fact>> semiTree(Fact curFact, Rule r){
     	  
     	
     	  
@@ -274,7 +274,7 @@ public class AdInference {
     	
     	   return inferFacts(res,r);
     }
-    public ArrayList<ArrayList<Fact>> Tree(Rule r){
+    private ArrayList<ArrayList<Fact>> Tree(Rule r){
  	   String[] s=new String[1];
  	   s[0]="root";
  	   Fact f=new Fact(r.toString(),s);
@@ -295,7 +295,7 @@ public class AdInference {
  	   //System.out.println("facts collection is: "+collection+" for the rule"+r);
  	   return collection;
     }
-    public void doUpdate(int depth,Fact newFact,RuleTree node,Rule r){
+    private void doUpdate(int depth, Fact newFact, RuleTree node, Rule r){
     	   
     	   RuleTree rt=new RuleTree(newFact);
     	   
@@ -314,7 +314,7 @@ public class AdInference {
     		   
     	   }
     }
-    public void updateTree(int depth,Fact newFact,RuleTree node,int max,Rule r){
+    private void updateTree(int depth, Fact newFact, RuleTree node, int max, Rule r){
     	   
     	   if(depth<=max){
     	   
@@ -354,7 +354,7 @@ public class AdInference {
     	  
     	   }
     }
-    public void buildTree(int depth,Rule r,HashMap<String,String> model, RuleTree parNode){
+    private void buildTree(int depth, Rule r, HashMap<String, String> model, RuleTree parNode){
  	      if(depth<r.bodys.length){
  	    	  Literal curGoal=r.bodys[depth];
      	      //System.out.println(curGoal+"the depth is"+depth);
@@ -400,7 +400,7 @@ public class AdInference {
  	      }
     }
 
-	   public double getMin(ArrayList<Fact> f){
+	   private double getMin(ArrayList<Fact> f){
     	      @Var double min=1;
 		   for (Fact fact : f) {
 			   if (fact.pro < min)
@@ -409,14 +409,14 @@ public class AdInference {
 		      return min;
 		      
 	   }
-	   public double getProduction(ArrayList<Fact> f){
+	   private double getProduction(ArrayList<Fact> f){
     		  @Var double res=1;
 		   for (Fact fact : f) {
 			   res = res * fact.pro;
 		   }
 		      return res;
 	   }
-	   public Fact combineFacts(ArrayList<Fact> fs){
+	   private Fact combineFacts(ArrayList<Fact> fs){
 		      if(fs.size()==1||!hasPro)
 		    	  return fs.get(0);
 		      else{
@@ -429,7 +429,7 @@ public class AdInference {
 		    	  return res;
 		      }
 	   }
-	   public ArrayList<Fact> dealIDB(ArrayList<Fact> idb){
+	   private ArrayList<Fact> dealIDB(ArrayList<Fact> idb){
 		      HashMap<String,ArrayList<Fact>> map= new HashMap<>();
 		      for(Fact f:idb){
 		    	  if(!map.containsKey(f.eString())){
@@ -446,7 +446,7 @@ public class AdInference {
 		      
 		      
 	   }
-	   public void trim(Fact f){
+	   private void trim(Fact f){
 		   for(Rule r:rules){
 		   	  @Var RuleTree root=null;
  	    	  for(RuleTree rt:trees){
@@ -464,7 +464,7 @@ public class AdInference {
  	    	 }
  	     
 	   }
-	   public ArrayList<Fact> dupFactRemove(@Var ArrayList<Fact> idb){
+	   private ArrayList<Fact> dupFactRemove(@Var ArrayList<Fact> idb){
 		   HashMap<String,Fact> fs= new HashMap<>();
 		   ArrayList<Fact> res= new ArrayList<>();
 		   idb=dealIDB(idb);
@@ -487,7 +487,7 @@ public class AdInference {
 		   }
 		  return res; 
 	   }
-	   public boolean isUpdate(ArrayList<Fact> idb){
+	   private boolean isUpdate(ArrayList<Fact> idb){
 		   		@Var boolean res=false;
 //		      ArrayList<Fact> pfs=new ArrayList<Fact>();
 //		      
@@ -576,7 +576,7 @@ public class AdInference {
 		      return res;
 		      
 	   }
-	   public double calPro(double p1, double p2){
+	   private double calPro(double p1, double p2){
 		   BigDecimal x1=BigDecimal.valueOf(p1);
 		   BigDecimal x2=BigDecimal.valueOf(p2);
 		   if(useMax)
@@ -586,7 +586,7 @@ public class AdInference {
 	   }
 
 	   @CanIgnoreReturnValue
-	   public boolean semi_update(){
+	   private boolean semi_update(){
     	      @Var boolean isChange=false;
 		      ArrayList<Fact> newIDB= new ArrayList<>();
 		      HashMap<String,Fact> map= new HashMap<>();
