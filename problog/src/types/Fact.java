@@ -7,7 +7,7 @@ public class Fact {
 
   public final String predicate;
   public final String[] constants;
-  public double pro = 1;
+  public double probability = 1.0d;
 
   public Fact(String predicate, String[] constants) {
     this.predicate = predicate;
@@ -25,9 +25,9 @@ public class Fact {
     }
     sb.append(constants[constants.length - 1]);
     sb.append(")");
-    if (pro != 2) {
+    if (probability != 2) {
       sb.append(" :");
-      sb.append(pro);
+      sb.append(probability);
     }
     return sb.toString();
   }

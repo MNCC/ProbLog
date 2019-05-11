@@ -94,7 +94,7 @@ public class dlParser {
 		    		  
 		    		  if(hasPro){
 		    		  int third=s.indexOf(":");
-		    		  f.pro=Double.parseDouble(s.substring(third+1, last+2).trim());
+		    		  f.probability =Double.parseDouble(s.substring(third+1, last+2).trim());
 		    		  }
 		    		  edb.add(f);
 		    	  }catch(Exception e){

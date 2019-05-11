@@ -115,7 +115,7 @@ public class Inference {
 			  @Var double p=getMin(fs);
  	    	  if(useProduction)
  	    		  p=getProduction(fs);
- 	    	  f.pro=p*r.pro;
+ 	    	  f.probability =p*r.probability;
  	      }
  	      return f;
        }
@@ -187,8 +187,8 @@ public class Inference {
 	   private double getMin(ArrayList<Fact> f){
        	      @Var double min=1;
 		   for (Fact fact : f) {
-			   if (fact.pro < min)
-				   min = fact.pro;
+			   if (fact.probability < min)
+				   min = fact.probability;
 		   }
 		      return min;
 		      
@@ -196,7 +196,7 @@ public class Inference {
 	   private double getProduction(ArrayList<Fact> f){
 		      @Var double res=1;
 		   for (Fact fact : f) {
-			   res = res * fact.pro;
+			   res = res * fact.probability;
 		   }
 		      return res;
 	   }
@@ -206,10 +206,10 @@ public class Inference {
 		      else{
 				  @Var double sum=0;
 		    	  for(Fact f:fs){
-		    		  sum=calPro(sum,f.pro);
+		    		  sum=calPro(sum,f.probability);
 		    	  }
 		    	  Fact res= new Fact(fs.get(0).predicate,fs.get(0).constants);
-		    	  res.pro=sum;
+		    	  res.probability =sum;
 		    	  return res;
 		      }
 	   }
@@ -251,14 +251,14 @@ public class Inference {
 		      }
 		    	  else{
 		    		  if(hasPro){
-		    			  if(database.get(f.eString()).pro!=f.pro){
+		    			  if(database.get(f.eString()).probability !=f.probability){
 		    				  if(count==1){
-		    					  double p=database.get(f.eString()).pro;
-		    					  database.get(f.eString()).pro=calPro(p,f.pro);
+		    					  double p=database.get(f.eString()).probability;
+		    					  database.get(f.eString()).probability =calPro(p,f.probability);
 		    					  res=true;
 		    				  }
-		    				  else if(database.get(f.eString()).pro<f.pro){
-		    				  database.get(f.eString()).pro=f.pro;
+		    				  else if(database.get(f.eString()).probability <f.probability){
+		    				  database.get(f.eString()).probability =f.probability;
 		    				  res=true;
 		    				  }
 		    				  else
@@ -266,7 +266,7 @@ public class Inference {
 		    				  if(res){
 		    				  for(Fact fact:factMap.get(f.predicate)){
 		    					   if(fact.eString().equals(f.eString())){
-		    						   fact.pro=database.get(f.eString()).pro;
+		    						   fact.probability =database.get(f.eString()).probability;
 		    						   break;
 		    					   }
 		    				  }

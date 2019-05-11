@@ -74,7 +74,7 @@ public class AdInference {
  		   String index=f.eString()+":";
  		   Fact temp=new Fact(f.predicate,f.constants);
  		   if(hasPro)
- 			   temp.pro=f.pro;
+ 			   temp.probability =f.probability;
  		   if(!factCollections.containsKey(index))
  			   factCollections.put(index, temp);
  	   }
@@ -151,7 +151,7 @@ public class AdInference {
 			  @Var double p=getMin(fs);
 	    	  if(useMax)
 	    		  p=getProduction(fs);
-	    	  f.pro=p*r.pro;
+	    	  f.probability =p*r.probability;
 	      }
 	      updateCollection(f,fs);
 	      return f;
@@ -163,7 +163,7 @@ public class AdInference {
     	   StringBuilder sb=new StringBuilder();
     	   Fact temp=new Fact(f.predicate,f.constants);
     	   if(hasPro)
-    		   temp.pro=f.pro;
+    		   temp.probability =f.probability;
     	   sb.append(f.eString());
     	   sb.append(":");
     	   for(Fact e:fs){
@@ -177,8 +177,8 @@ public class AdInference {
     	   }
     	   else{
     		   if(hasPro){
-    			   if(factCollections.get(index).pro<f.pro){
-    				   factCollections.get(index).pro=f.pro;
+    			   if(factCollections.get(index).probability <f.probability){
+    				   factCollections.get(index).probability =f.probability;
     				   isUpdate=true;
     			   }
     		   }
@@ -353,8 +353,8 @@ public class AdInference {
 	   private double getMin(ArrayList<Fact> f){
     	      @Var double min=1;
 		   for (Fact fact : f) {
-			   if (fact.pro < min)
-				   min = fact.pro;
+			   if (fact.probability < min)
+				   min = fact.probability;
 		   }
 		      return min;
 		      
@@ -362,7 +362,7 @@ public class AdInference {
 	   private double getProduction(ArrayList<Fact> f){
     		  @Var double res=1;
 		   for (Fact fact : f) {
-			   res = res * fact.pro;
+			   res = res * fact.probability;
 		   }
 		      return res;
 	   }
@@ -372,10 +372,10 @@ public class AdInference {
 		      else{
 				  @Var double sum=0;
 		    	  for(Fact f:fs){
-		    		  sum=calPro(sum,f.pro);
+		    		  sum=calPro(sum,f.probability);
 		    	  }
 		    	  Fact res= new Fact(fs.get(0).predicate,fs.get(0).constants);
-		    	  res.pro=sum;
+		    	  res.probability =sum;
 		    	  return res;
 		      }
 	   }
@@ -423,7 +423,7 @@ public class AdInference {
 		    	  
 		    	  Fact f=new Fact(entry.getValue().predicate,entry.getValue().constants);
 		    	  if(hasPro)
-		    		  f.pro=entry.getValue().pro;
+		    		  f.probability =entry.getValue().probability;
 		    	  pfs.add(f);
 		      }
 		   pfs=dealIDB(pfs);
@@ -460,13 +460,13 @@ public class AdInference {
 		      }
 		    	  else{
 		    		  if(hasPro){
-		    			  if(database.get(f.eString()).pro!=f.pro){
-		    					  database.get(f.eString()).pro=f.pro;
+		    			  if(database.get(f.eString()).probability !=f.probability){
+		    					  database.get(f.eString()).probability =f.probability;
 		    					  res=true;
 		    				  if(res){
 		    				  for(Fact fact:factMap.get(f.predicate)){
 		    					   if(fact.eString().equals(f.eString())){
-		    						   fact.pro=database.get(f.eString()).pro;
+		    						   fact.probability =database.get(f.eString()).probability;
 		    						   break;
 		    					   }
 		    				  }
@@ -513,7 +513,7 @@ public class AdInference {
 		    		  }
 		    		  else{
 		    			  if(hasPro){
-		    				  if(map.get(f.eString()).pro!=f.pro){
+		    				  if(map.get(f.eString()).probability !=f.probability){
 		    					  newIDB.add(f);
 		    					  isChange=true;
 		    				  }

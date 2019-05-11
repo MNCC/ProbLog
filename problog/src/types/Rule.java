@@ -7,12 +7,12 @@ public class Rule {
 
   public final Literal head;
   public final Literal[] bodys;
-  public final double pro;
+  public final double probability;
 
-  public Rule(Literal head, Literal[] bodys, double pro) {
+  public Rule(Literal head, Literal[] bodys, double probability) {
     this.head = head;
     this.bodys = bodys;
-    this.pro = pro;
+    this.probability = probability;
   }
 
   @Override
@@ -25,9 +25,9 @@ public class Rule {
       sb.append(" ,");
     }
     sb.append(bodys[bodys.length - 1]);
-    if (pro != 1) {
+    if (probability != 1) {
       sb.append(" :");
-      sb.append(pro);
+      sb.append(probability);
     }
     return sb.toString();
   }
