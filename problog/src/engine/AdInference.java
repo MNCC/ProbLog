@@ -69,7 +69,6 @@ public class AdInference {
  		   }
  		   else
  			   factMap.get(entry.getValue().predicate).add(entry.getValue());
- 		   //preIDB.add(entry.getValue());
  	   }
  	   for(Fact f:parser.edb){
  		   String index=f.eString()+":";
@@ -97,8 +96,6 @@ public class AdInference {
  	      else{
  	    	  
  	    	  for(int i=0;i<a.child.size();i++){
- 	    		  //System.out.println("cur node is: "+a+" cur depth is"+depth);
- 	    		  //System.out.println("child is: "+a.child);
  	    		  dfsTree(depth+1,a.child.get(i),fs,r);
  	    	  }
  	      }
@@ -106,19 +103,13 @@ public class AdInference {
     private void semiDfs(int depth, RuleTree a, ArrayList<Fact> fs, Fact newFact, Rule r){
     	 if(depth<r.bodys.length)
 	      {
-	    	   
-	    		 // System.out.println("cur node is: "+a+" cur depth is"+depth);
+
 	    		  if(a.val.eString().equals(newFact.eString())){
-//	    			  System.out.println("find out! "+newFact);
-//	    			  System.out.println("the par of it is: "+a.par);
-//	    			  System.out.println("the child of it is: "+a.child);
 	    			  dfsTree(depth+1,a,fs,r);
 	    		  }
 	    		     
 	    		  else{
 	    			  for(int i=0;i<a.child.size();i++){
-//	    				System.out.println("the cur node is: "+a);
-//	    				System.out.println("the child of it is: "+a.child);
 	    			    semiDfs(depth+1,a.child.get(i),fs,newFact,r);
 	    			    
 	    			}
@@ -129,9 +120,6 @@ public class AdInference {
 
     private ArrayList<ArrayList<Fact>> inferFacts(ArrayList<ArrayList<Fact>> collection, Rule r){
  	   ArrayList<ArrayList<Fact>> res= new ArrayList<>();
-// 	   System.out.println("----------------------------");
-// 	   System.out.println("collecrions is: "+collection);
-// 	  System.out.println("----------------------------");
 		for (ArrayList<Fact> facts : collection)
 			if (!facts.isEmpty())
 				res.add(inferTheFact(r, facts));
@@ -165,8 +153,6 @@ public class AdInference {
 	    		  p=getProduction(fs);
 	    	  f.pro=p*r.pro;
 	      }
-//	      System.out.println("new fact is generate "+f+" from "+fs);
-//	      System.out.println("before: "+factCollections);
 	      updateCollection(f,fs);
 	      return f;
     }
@@ -187,7 +173,6 @@ public class AdInference {
     	   String index=sb.toString();
     	   if(!factCollections.containsKey(index)){
     		   factCollections.put(index, temp);
-    		   //System.out.println(index+" generate!");
     		   isUpdate=true;
     	   }
     	   else{
@@ -206,9 +191,6 @@ public class AdInference {
  	      while(count>=0){
  	    	  ArrayList<Fact> temp= new ArrayList<>();
  	    	  for(int i=0;i<r.bodys.length;i++){
-// 	    		  System.out.println();
-// 	    		  System.out.println("infer collections is: "+fs);
-// 	    		  System.out.println();
  	    		  temp.add(fs.get(count-i));
  	    	  }
  	    	  res.add(infer(r,temp));
@@ -230,7 +212,6 @@ public class AdInference {
     			   }
     			   }
     			   int max=r.bodys.length-1;
-    			   //printTree(root);
     			   if(curFact.predicate.equals(r.bodys[0].predicate)){
 		    		   if(hasPro){
 		    			   if(!database.containsKey(curFact.eString()))
@@ -240,14 +221,9 @@ public class AdInference {
 		    		   else
 		    			   doUpdate(0,curFact,root,r);
     			   }
-    			   //System.out.println("child is: "+root.child);
     			   for(RuleTree tc:root.child){
-    				  
-                       //System.out.println("update node: "+tc);    				   
+
     				   ArrayList<Fact> temp= new ArrayList<>();
-    				   //System.out.println(database);
-    				   //System.out.println("curFact is: "+curFact);
-    				   //System.out.println("the child of "+tc+" is "+tc.child);
     				   if(hasPro){
     				      if(!database.containsKey(curFact.eString()))
     				          updateTree(1,curFact,tc,max,r);
@@ -255,13 +231,6 @@ public class AdInference {
     				   else{
     					   updateTree(1,curFact,tc,max,r);
     				   }
-    				   //removeDuplicate(root);
-    				   //printTree(root);
-    				   //System.out.println("update successfully!");
-    				   //printTree(root);
-//    				   System.out.println("current fact is: "+curFact);
-//    				   System.out.println("cur Node is: "+tc);
-    				   //System.out.println(root.toString()+" "+root.child.size());
     				   semiDfs(0,tc,temp,curFact,r);
     				   
     				   res.add(temp);
@@ -282,9 +251,6 @@ public class AdInference {
  	   RuleTree a=new RuleTree(f);
  	   buildTree(0,r,model,a);
  	   trees.add(a);
- 	   
- 	   //System.out.println(a.child.size());
- 	   //printTree(a);
  	   ArrayList<ArrayList<Fact>> collection= new ArrayList<>();
  	   for(int i=0;i<a.child.size();i++){
  		   ArrayList<Fact> temp= new ArrayList<>();
@@ -292,7 +258,6 @@ public class AdInference {
  		   
  		   collection.add(temp);
  	   }
- 	   //System.out.println("facts collection is: "+collection+" for the rule"+r);
  	   return collection;
     }
     private void doUpdate(int depth, Fact newFact, RuleTree node, Rule r){
@@ -304,8 +269,6 @@ public class AdInference {
     	   if(depth<r.bodys.length-1){
     		   Literal curGoal=r.bodys[depth];
     		   HashMap<String,String> curModel= new HashMap<>();
-//    		   System.out.println("curGoal is: "+curGoal);
-//    		   System.out.println("curFact is: "+newFact);
     		   for(int i=0;i<newFact.constants.length;i++){
 	    			  if(!curModel.containsKey(curGoal.variables[i].trim()))
 	    				  curModel.put(curGoal.variables[i].trim(), newFact.constants[i].trim());
@@ -318,16 +281,12 @@ public class AdInference {
     	   
     	   if(depth<=max){
     	   
-    		  
-//    			   System.out.println("depth is: "+depth);
+
     			   Literal curGoal=r.bodys[depth];
-//    			   System.out.println("curGoal is: "+curGoal);
-//    			   System.out.println("curFact is: "+newFact);
     			if(curGoal.predicate.equals(newFact.predicate)){
     			   HashMap<String,String> model= new HashMap<>();
     			   Literal lastMatch=r.bodys[depth-1];
     			   Fact lastFact=node.val;
-    			   //System.out.println("curGoal is: "+curGoal+" last match is "+lastMatch+" last fact is "+lastFact);
     			   for(int i=0;i<lastMatch.variables.length;i++){
     				   if(!model.containsKey(lastMatch.variables[i].trim()))
     					   model.put(lastMatch.variables[i].trim(), lastFact.constants[i].trim());
@@ -341,7 +300,6 @@ public class AdInference {
     				   }
     			   }
     			   if(isMatch){
-    			   //System.out.println(newFact+" is match with "+node.val);
     			   doUpdate(depth,newFact,node,r);
     			   
     			   }
@@ -357,7 +315,6 @@ public class AdInference {
     private void buildTree(int depth, Rule r, HashMap<String, String> model, RuleTree parNode){
  	      if(depth<r.bodys.length){
  	    	  Literal curGoal=r.bodys[depth];
-     	      //System.out.println(curGoal+"the depth is"+depth);
 
      	      if(factMap.containsKey(curGoal.predicate)){
      	    	  
@@ -378,14 +335,11 @@ public class AdInference {
      	    	  }
      	    	  
      	    	  if(canMatch){
-//     	    		  System.out.println("is match!");
-//     	    		  System.out.println(lastFact+" match with: "+f);
      	    		  HashMap<String,String> curModel= new HashMap<>();
      	    		  for(int i=0;i<f.constants.length;i++){
      	    			  if(!curModel.containsKey(curGoal.variables[i].trim()))
      	    				  curModel.put(curGoal.variables[i].trim(), f.constants[i].trim());
      	    		  }
-//     	    		  System.out.println("curModel is: "+curModel);
      	    		  RuleTree node=new RuleTree(f);
  	    			  parNode.child.add(node);
  	    			  node.par=parNode;
@@ -393,10 +347,6 @@ public class AdInference {
      	    		  }
      	      }
  	      }
-//     	      else{
-//     	    	  System.out.println("can not find: "+curGoal.predicate);
-//     	    	  System.out.println("because the database is: "+factMap);
-//     	      }
  	      }
     }
 
@@ -489,47 +439,17 @@ public class AdInference {
 	   }
 	   private boolean isUpdate(ArrayList<Fact> idb){
 		   		@Var boolean res=false;
-//		      ArrayList<Fact> pfs=new ArrayList<Fact>();
-//		      
-//		      for(Map.Entry<String, Fact> entry:factCollections.entrySet()){
-//		    	  
-//		    	  
-//		    	  Fact f=new Fact(entry.getValue().predicate,entry.getValue().constants);
-//		    	  if(hasPro)
-//		    		  f.pro=entry.getValue().pro;
-//		    	  pfs.add(f);
-//		      }
-//		      idb=dealIDB(idb);
-//		      HashMap<String,Fact> fs=new HashMap<String,Fact>();
-////		      System.out.println();
-////		      System.out.println("original one is: "+idb);
-////		      System.out.println("correct one is: "+dupFactRemove(idb));
-////		      System.out.println(factCollections);
-////		      System.out.println();
-//		      //System.out.println("before pfs is: "+pfs);
-//		      pfs=dealIDB(pfs);
-//		      //System.out.println("after pfs is: "+pfs);
-//		      for(Fact e:pfs){
-//		    	  if(!fs.containsKey(e.eString()))
-//		    		  fs.put(e.eString(),e);
-//		      }
-////		      System.out.println("doing update :"+fs);
-////		      System.out.println("idb is: "+idb);
-//		      idb=dupFactRemove(idb);
 		      ArrayList<Fact> newF= new ArrayList<>();
 		      for(Fact f:idb){
 		    	  if(!database.containsKey(f.eString())){
-		    		  //System.out.println("update f: "+fs.get(f.eString()));
-		    		  
+
 		    		  database.put(f.eString(), f);
-		    		  //newIDB.add(f);
-		    		  
+
 		    		  res=true;
 		    		  newF.add(f);
 		    		  
 		    	      if(!factMap.containsKey(f.predicate)){
 		    		      ArrayList<Fact> temp= new ArrayList<>();
-		    		      //System.out.println("update new f in db: "+fs.get(f.eString()));
 		    		      temp.add(f);
 		    		      factMap.put(f.predicate, temp);
 		    		  
@@ -541,19 +461,8 @@ public class AdInference {
 		    	  else{
 		    		  if(hasPro){
 		    			  if(database.get(f.eString()).pro!=f.pro){
-//		    				  if(count==1){
-		    				  //System.out.println("f is: "+f);
-		    					  //System.out.println("update "+f+" into "+fs.get(f.eString()));
 		    					  database.get(f.eString()).pro=f.pro;
 		    					  res=true;
-		    					  //newIDB.add(f);
-//		    				  }
-//		    				  else if(database.get(f.eString()).pro<f.pro){
-//		    				  database.get(f.eString()).pro=f.pro;
-//		    				 res=true;
-//		    				  }
-//		    				  else
-//		    					  res=false;
 		    				  if(res){
 		    				  for(Fact fact:factMap.get(f.predicate)){
 		    					   if(fact.eString().equals(f.eString())){
@@ -572,7 +481,6 @@ public class AdInference {
     		      for(Fact f:newF)
     			    trim(f);
     		  }
-		     // System.out.println("curEDB is: "+factMap);
 		      return res;
 		      
 	   }
@@ -590,10 +498,7 @@ public class AdInference {
     	      @Var boolean isChange=false;
 		      ArrayList<Fact> newIDB= new ArrayList<>();
 		      HashMap<String,Fact> map= new HashMap<>();
-		      //System.out.println("preIDB is: "+preIDB);
-		      //System.out.println("before update curIDB is: "+curIDB);
-		   	  @Var ArrayList<Fact> temp= new ArrayList<>();
-		      temp=(ArrayList<Fact>) dealIDB(curIDB).clone();
+		   	  ArrayList<Fact> temp=(ArrayList<Fact>) dealIDB(curIDB).clone();
 		      
 		    	  
 		    	  
@@ -617,35 +522,9 @@ public class AdInference {
 		    		  }
 		    	  }
 		    	  
-		      
-//	          System.out.println("map is: "+map); 
-//		      System.out.println(preIDB+" is copied from "+curIDB);
-//		      System.out.println("new facts is: "+newIDB);
+
 		      preIDB=(ArrayList<Fact>) curIDB.clone();
-		      //System.out.println("preIDB is: "+preIDB);
-//		      ArrayList<Fact> pfs=new ArrayList<Fact>();
-//              for(Map.Entry<String, Fact> entry:factCollections.entrySet()){
-//		    	  
-//		    	  
-//		    	  Fact f=new Fact(entry.getValue().predicate,entry.getValue().constants);
-//		    	  if(hasPro)
-//		    		  f.pro=entry.getValue().pro;
-//		    	  pfs.add(f);
-//		      }
-//              HashMap<String,Fact> fs=new HashMap<String,Fact>();
-//              for(Fact e:pfs){
-//		    	  if(!fs.containsKey(e.eString()))
-//		    		  fs.put(e.eString(),e);
-//		      }
-//              ArrayList<Fact> nTemp=new ArrayList<Fact>();
-//              for(Fact f:newIDB){
-//            	  if(fs.containsKey(f.eString()))
-//            		  nTemp.add(f);
-//              }
 		      curIDB=(ArrayList<Fact>) dupFactRemove(newIDB).clone();
-//		      System.out.println("curIDB is: "+curIDB);
-		      //System.out.println("curIDB is: "+curIDB);
-		      
 		     
 		      return isChange;
               
@@ -657,43 +536,16 @@ public class AdInference {
 	    	  System.out.println("rules is "+rules);
 	    	  @Var int count=1;
 		      while(isupdate){
-		    	  //System.out.println("curEDB is: "+factMap);
-		    	  
-			      //System.out.println("curIDB is: "+curIDB);
 		    	  isupdate=false;
 				  @Var ArrayList<Fact> idb= new ArrayList<>();
 
 		    	  if(count==1){
 		    	  for(Rule r:rules){
-					  @Var ArrayList<ArrayList<Fact>> temp= new ArrayList<>();
-		    		  //temp=(ArrayList<Fact>) findAllMatch(r,false).clone();
-		    		  temp=inferFacts(Tree(r),r);
-		    		  //System.out.println("current infer is: "+temp);
+					  ArrayList<ArrayList<Fact>> temp=inferFacts(Tree(r),r);
 					  for (ArrayList<Fact> facts : temp) {
 						  idb.addAll(facts);
 					  }
 		    	  }
-//		    	  for(Fact f:idb){
-//		    		  RuleTree root=null;
-//		    		  for(Rule r:rules){
-//	    			   for(RuleTree rt:trees){
-//	    				   if(rt.val.predicate.equals(r.toString())){
-//	    					   root=rt;
-//	    					   break;
-//	    			   }
-//	    			   }
-//	    			   int max=r.bodys.length-1;
-//	    			   //printTree(root);
-//	    			   if(f.predicate.equals(r.bodys[0].predicate)&&!database.containsKey(f.eString()))
-//			    		   doUpdate(0,f,root,r);
-//	    			   for(RuleTree tc:root.child){
-//	    			   if(!database.containsKey(f.eString()))
-//	    					 updateTree(1,f,tc,max,r);
-//	    			   }
-//
-//		    		  
-//		    	  }
-//		    	  }
 		    	  }
 		    	  else{
 		    		  ArrayList<ArrayList<ArrayList<Fact>>> fs= new ArrayList<>();
@@ -712,23 +564,10 @@ public class AdInference {
 		    	  }
 		    	  idb=dupFactRemove(idb);
 		    	  curIDB=(ArrayList<Fact>) idb.clone();
-		    	  //System.out.println("new infer facts is: "+idb);
-		    	  //resetIDB();
 		    	  semi_update();
-		    	  //System.out.println("facts collection is: "+factCollections);
-		    	  
+
 		    	  isupdate=isUpdate(idb);
-		    	 // isupdate=semiUpdate;
-		    	  //System.out.println("should update? "+isupdate);
-		    	  
-		    	  
-//		    	  if(count==1)
-//		    	      System.out.println("idb is: "+idb);
-//		    	  else
-//		    		  System.out.println("idb is: "+curIDB);
-//		    	  System.out.println();
-		    	  //System.out.println("---------------------------");
-		    	  
+
 		    	  count++;
 		      }
 		      System.out.println("The iteration time is: "+count);

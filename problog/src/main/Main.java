@@ -53,11 +53,7 @@ public class Main {
 				continue;
 			else
 				break;
-		}        
-//		AdInference ad=new AdInference("\\2-25.cdl",true);  
-//		ad.semi_naive();
-//		System.out.println(ad.factMap);
-
+		}
 	}
 	private static void testNaive(String textName, boolean hasPro, String max, String production) throws IOException{
       Inference i=new Inference(File.separator+textName,hasPro); // this is naive

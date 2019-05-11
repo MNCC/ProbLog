@@ -77,7 +77,6 @@ public class Inference {
     	      }
     	      else{
     	    	  for(int i=0;i<a.child.size();i++){
-    	    		  //System.out.println("cur node is: "+a+" cur depth is"+depth);
     	    		  dfsTree(depth+1,a.child.get(i),fs,r);
     	    	  }
     	      }
@@ -118,7 +117,6 @@ public class Inference {
  	    		  p=getProduction(fs);
  	    	  f.pro=p*r.pro;
  	      }
- 	      //System.out.println("new fact is generate "+f+" from "+fs);
  	      return f;
        }
        private ArrayList<Fact> inferTheFact(Rule r, ArrayList<Fact> fs){
@@ -141,8 +139,6 @@ public class Inference {
     	   HashMap<String,String> model= new HashMap<>();
     	   AnwserTree a=new AnwserTree(f);
     	   buildTree(0,r,model,a);
-    	   //System.out.println(a.child.size());
-    	   //printTree(a);
     	   ArrayList<ArrayList<Fact>> collection= new ArrayList<>();
     	   for(int i=0;i<a.child.size();i++){
     		   ArrayList<Fact> temp= new ArrayList<>();
@@ -150,60 +146,32 @@ public class Inference {
     		   
     		   collection.add(temp);
     	   }
-    	   //System.out.println("facts collection is: "+collection+" for the rule"+r);
     	   return collection;
        }
        private void buildTree(int depth, Rule r, HashMap<String, String> model, AnwserTree parNode){
     	      if(depth<r.bodys.length){
     	    	  Literal curGoal=r.bodys[depth];
-        	      //System.out.println(curGoal+"the depth is"+depth);
-
-//        	      for(String str:model.keySet()){
-//        	    	  curModel.put(str, model.get(str));
-//        	      }   	
-//        	      System.out.println("curGoal is "+curGoal);
-//        	      System.out.println("curModel is "+model);
-//        	      System.out.println("curNode is: "+parNode);
         	      if(factMap.containsKey(curGoal.predicate)){
         	    	  
         	    	  
         	      
         	      for(Fact f:factMap.get(curGoal.predicate)){
 					  @Var boolean canMatch=true;
-//        	    	  if(f.toString().equals(lastFact))
-//        	    		  continue;
         	    	  for(int i=0;i<f.constants.length;i++){
-        	    		  //System.out.println(f.constants[i]);
         	    		  if(model.containsKey(curGoal.variables[i].trim())){
         	    			  if(!model.get(curGoal.variables[i].trim()).equals(f.constants[i].trim())){
         	    				  canMatch=false;
         	    				  break;
         	    			  }
         	    		  }
-//        	    		  if(curModel.containsKey(curGoal.variables[i].trim())){
-//        	    			  curModel.put(curGoal.variables[i].trim(), f.constants[i].trim());
-//        	    			  //System.out.println(curModel);
-//        	    		  }
-//        	    		  else{
-//        	    			  if(!curModel.get(curGoal.variables[i].trim()).equals(f.constants[i].trim())){
-//        	    				  canMatch=false;
-//        	    				  System.out.println("zhe li bu pi pei?"+curGoal.variables[i].trim()+" and "+f.constants[i].trim());
-//        	    				  System.out.println("last fact is: "+lastFact);
-//        	    				  System.out.println("current fact is: "+f);
-//        	    				  break;
-//        	    			  }
-//        	    		  }
         	    	  }
         	    	  
         	    	  if(canMatch){
-//        	    		  System.out.println("is match!");
-//        	    		  System.out.println(lastFact+" match with: "+f);
         	    		  HashMap<String,String> curModel= new HashMap<>();
         	    		  for(int i=0;i<f.constants.length;i++){
         	    			  if(!curModel.containsKey(curGoal.variables[i].trim()))
         	    				  curModel.put(curGoal.variables[i].trim(), f.constants[i].trim());
         	    		  }
-//        	    		  System.out.println("curModel is: "+curModel);
         	    		  AnwserTree node=new AnwserTree(f);
     	    			  parNode.child.add(node);
     	    			  node.par=parNode;
@@ -213,10 +181,6 @@ public class Inference {
      	    	  
         	      }
     	      }
-//        	      else{
-//        	    	  System.out.println("can not find: "+curGoal.predicate);
-//        	    	  System.out.println("because the database is: "+factMap);
-//        	      }
     	      }
        }
 
@@ -331,23 +295,16 @@ public class Inference {
 	    	  System.out.println("rules is "+rules);
 	    	  @Var int count=1;
 		      while(isupdate){
-		    	  //System.out.println("curEDB is: "+factMap);
 		    	  isupdate=false;
 				  @Var ArrayList<Fact> idb= new ArrayList<>();
-		    	  
+
 		    	  for(Rule r:rules){
-					  @Var ArrayList<ArrayList<Fact>> temp= new ArrayList<>();
-		    		  //temp=(ArrayList<Fact>) findAllMatch(r,false).clone();
-		    		  temp=inferFacts(Tree(r),r);
-		    		  //System.out.println("current infer is: "+temp);
+					  ArrayList<ArrayList<Fact>> temp=inferFacts(Tree(r),r);
 
 					  for (ArrayList<Fact> facts : temp) {
 						  idb.addAll(facts);
 					  }
 		    	  }
-//		    	  System.out.println("idb is: "+idb);
-		    	  //System.out.println("---------------------------");
-		    	  
 		    	  isupdate=isUpdate(idb,count);
 		    	  count++;
 		      }

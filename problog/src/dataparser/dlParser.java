@@ -40,41 +40,6 @@ public class dlParser {
 		}
 		return res;
 	}
-	public boolean isFact(String str){
-		   
-		   int left,right;
-		   left=str.indexOf("(");
-		   right=str.indexOf(")");
-		   if(left==-1||right==-1)
-			   return false;
-		   String val=str.substring(left, right+1);
-		   if(!val.contains(","))
-			   return false;
-		   for(int i=0;i<val.length();i++){  // check edge(1,2)
-			   if(val.charAt(i)>='A'&&val.charAt(i)<='Z')
-				   return false;
-			   if(val.substring(i, i+1).equals(" "))
-				   return false;
-		   }
-		   return true;
-		   
-	}
-	public boolean isLiteral(String str){
-		 int left,right;
-		   left=str.indexOf("(");
-		   right=str.indexOf(")");
-		   if(left==-1||right==-1)
-			   return false;
-		   String val=str.substring(left, right+1);
-		   if(!val.contains(","))
-			   return false;
-		   String[] token=val.substring(1,val.length()-2).split(",");
-		for (String s : token) {
-			if (s.length() > 1 || (s.charAt(0) <= 'A' && s.charAt(0) >= 'Z'))
-				return false;
-		}
-		   return true;
-	}
 
 	private Literal generateLiteral(String str){
 		 
@@ -105,7 +70,6 @@ public class dlParser {
 		    		  String[] bodys=body.substring(0, last).split(", "); // split body
 		    		  Literal[] ls=new Literal[bodys.length];
 		    		  for(int i=0;i<bodys.length;i++){
-		    			  //System.out.println(bodys[i]);
 		    			  Literal l=generateLiteral(bodys[i]);
 		    			  ls[i]=l;
 		    		  }
@@ -126,23 +90,10 @@ public class dlParser {
 		    		  String pre=s.substring(0, left);
 		    		  String[] constants=s.substring(left+1, right).split(",");
 
-//		    		  for(int i=0;i<constants.length;i++){  // check edge(1,2)
-//		   			     String temp=constants[i];
-//		   			     if(constants[i].length()==1&&constants[i].charAt(0)>='A'&&constants[i].charAt(0)<='Z'){
-//		   			    	 isLegal=false;
-//		   			    	 break;
-//		   			     }
-//		   			     else{
-//		   			    	 for(int k=0;k<constants[i].length();k++){
-//		   			    		 
-//		   			    	 }
-//		   			     }
-//		   		   }
 		    		  Fact f=new Fact(pre,constants);
 		    		  
 		    		  if(hasPro){
 		    		  int third=s.indexOf(":");
-		    		  //System.out.println(s.substring(third, last).trim());
 		    		  f.pro=Double.parseDouble(s.substring(third+1, last+2).trim());
 		    		  }
 		    		  edb.add(f);
@@ -150,45 +101,6 @@ public class dlParser {
 		    		  System.out.println("this is not a legal fact");
 		    	  }
 	          }
-//	    	  if(isFact(s)){
-//	    		  s=s.trim();
-//	    		  int left=s.indexOf("(");
-//	    		  int right=s.indexOf(")");
-//	    		  int last=s.indexOf(".");
-//	    		  String pre=s.substring(0, left);
-//	    		  String[] constans=s.substring(left+1, right).split(",");
-//	    		  Fact f=new Fact(pre,constans);
-//	    		  
-//	    		  if(hasPro){
-//	    		  int third=s.indexOf(":");
-//	    		  double pro=Double.parseDouble(s.substring(third+1, last));
-//	    		  f.pro.add(pro);
-//	    		  }
-//	    		  edb.add(f);
-//	    		  
-//	    	  }
-//	    	  if(isRule(s)){
-//	    		  String[] str=s.split(":-");
-//	    		  String head=str[0].trim();
-//	    		  String body=str[1].trim();
-//	    		  Literal h=generateLiteral(head);
-//	    		  int last=body.indexOf(".");
-//	    		  double pro=1;
-//	    		  if(hasPro){
-//	    			  last=body.indexOf(":");
-//	    			  pro=Double.parseDouble(body.substring(last+1, body.indexOf(".")));
-//	    		  }
-//	    		  String[] bodys=body.substring(0, last).split(", ");
-//	    		  Literal[] ls=new Literal[bodys.length];
-//	    		  for(int i=0;i<bodys.length;i++){
-//	    			  Literal l=generateLiteral(bodys[i]);
-//	    			  ls[i]=l;
-//	    		  }
-//	    		  Rule r=new Rule(line,h,ls,pro);
-//	    		  line++;
-//	    		  rules.add(r);
-//	    		  
-//	    	  }
 	    	  
 	      }
    }
