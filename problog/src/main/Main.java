@@ -1,5 +1,7 @@
 package main;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -10,99 +12,126 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
+
 import engine.AdInference;
 import engine.Inference;
 import types.Fact;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 @CheckReturnValue
 public class Main {
 
-	public static void main(String[] args) throws IOException {
-		Scanner sc=new Scanner(System.in, UTF_8.name());
-		while(true){
-			System.out.println("please choose naive or semi_naive, if naive, please enter (n), semi_naive is (s)");
-			String way=sc.nextLine().toLowerCase();
-			System.out.println("please choose file, enter: ");
-			String textName=sc.nextLine();
-			System.out.println("do you want probability? enter(y/n): ");
-			String pro=sc.nextLine().toLowerCase();
-			System.out.println("do you want max function for disjunction? enter(y?): ");
-			String max=sc.nextLine().toLowerCase();
-			System.out.println("do you want production function for conjunction? enter(y?): ");
-			String production=sc.nextLine().toLowerCase();
-			@Var boolean hasPro=false;
-			
-			if(pro.equals("y"))
-				hasPro=true;
-			if(way.equals("s")){
-				
-				testSemiNaive(textName,hasPro,max);
-			}
-			else{
-				testNaive(textName,hasPro,max,production);
-			}
-			
-			System.out.println("do you want continue(y?), enter: ");
-			String exit=sc.nextLine().toLowerCase();
-			if(exit.equals("y"))
-				continue;
-			else
-				break;
-		}
-	}
-	private static void testNaive(String textName, boolean hasPro, String max, String production) throws IOException{
-      Inference i=new Inference(File.separator+textName,hasPro); // this is naive
-      if(max.equals("y"))
-    	  i.useMax=true;
-      if(production.equals("y"))
-    	  i.useProduction=true;
-      long currentTime1,currentTime2;
-      currentTime1=System.currentTimeMillis();
-      i.naive();
-      currentTime2=System.currentTimeMillis();
-      System.out.println(i.factMap);
-      writeFile(i.factMap);
-      System.out.println("use time: "+(currentTime2-currentTime1)+" ms");
-		@Var int size=0;
-		 for(Map.Entry<String, ArrayList<Fact>> entry:i.factMap.entrySet()){
-	        	size=size+entry.getValue().size();
-	        }
-		 System.out.println("the siez of all facts is: "+size);
-	     
-	}
-	private static void testSemiNaive(String textName, boolean hasPro, String max) throws IOException{
-		
-		 AdInference ad=new AdInference(File.separator+textName,hasPro); // this is semi naive
-		 if(max.equals("y"))
-	    	  ad.useMax=true;
-	        long currentTime1,currentTime2;
-	        currentTime1=System.currentTimeMillis();
-	        ad.semi_naive();
-	        currentTime2=System.currentTimeMillis();
-	        System.out.println(ad.factMap);
-	        writeFile(ad.factMap);
-	        System.out.println("use time: "+(currentTime2-currentTime1)+" ms");
-			@Var int size=0;
-	        for(Map.Entry<String, ArrayList<Fact>> entry:ad.factMap.entrySet()){
-	        	size=size+entry.getValue().size();
-	        }
-	        System.out.println("the siez of all facts is: "+size);
-	}
+  public static void main(String[] args) throws IOException {
 
-	private static void writeFile(HashMap<String, ArrayList<Fact>> map) throws IOException{
-		try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(System.getProperty("user.dir")+File.separator+"output.text"), UTF_8)) {
-			for (Map.Entry<String, ArrayList<Fact>> entry : map.entrySet()) {
-				ArrayList<Fact> temp = entry.getValue();
-				for (Fact f : temp) {
-					bw.write(f.toString());
-					bw.newLine();
-				}
-			}
-		}
-	}
+    Scanner sc = new Scanner(System.in, UTF_8.name());
+
+    while (true) {
+
+      System.out.println(
+          "please choose naive or semi_naive, if naive, please enter (n), semi_naive is (s)");
+      String way = sc.nextLine().toLowerCase();
+      System.out.println("please choose file, enter: ");
+      String textName = sc.nextLine();
+      System.out.println("do you want probability? enter(y/n): ");
+      String pro = sc.nextLine().toLowerCase();
+      System.out.println("do you want max function for disjunction? enter(y?): ");
+      String max = sc.nextLine().toLowerCase();
+      System.out.println("do you want production function for conjunction? enter(y?): ");
+      String production = sc.nextLine().toLowerCase();
+
+      @Var
+      boolean hasProbability = false;
+
+      if (pro.equals("y")) {
+        hasProbability = true;
+      }
+
+      if (way.equals("s")) {
+        testSemiNaive(textName, hasProbability, max);
+      } else {
+        testNaive(textName, hasProbability, max, production);
+      }
+
+      System.out.println("do you want continue(y?), enter: ");
+
+      String exit = sc.nextLine().toLowerCase();
+      if (!exit.equals("y")) {
+        break;
+      }
+    }
+  }
+
+  private static void testNaive(String filename, boolean hasProbability, String max,
+      String production) throws IOException {
+
+    Inference i = new Inference(File.separator + filename, hasProbability);
+    if (max.equals("y")) {
+      i.useMax = true;
+    }
+    if (production.equals("y")) {
+      i.useProduction = true;
+    }
+
+    long currentTime1, currentTime2;
+    currentTime1 = System.currentTimeMillis();
+    i.naive();
+    currentTime2 = System.currentTimeMillis();
+
+    System.out.println(i.factMap);
+
+    writeFile(i.factMap);
+
+    System.out.println("use time: " + (currentTime2 - currentTime1) + " ms");
+
+    @Var
+    int size = 0;
+    for (Map.Entry<String, ArrayList<Fact>> entry : i.factMap.entrySet()) {
+      size = size + entry.getValue().size();
+    }
+
+    System.out.println("the size of all facts is: " + size);
+  }
+
+  private static void testSemiNaive(String filename, boolean hasProbability, String max)
+      throws IOException {
+
+    AdInference ad = new AdInference(File.separator + filename, hasProbability); // this is semi
+                                                                                 // naive
+    if (max.equals("y")) {
+      ad.useMax = true;
+    }
+
+    long currentTime1, currentTime2;
+    currentTime1 = System.currentTimeMillis();
+    ad.semi_naive();
+    currentTime2 = System.currentTimeMillis();
+
+    System.out.println(ad.factMap);
+
+    writeFile(ad.factMap);
+
+    System.out.println("use time: " + (currentTime2 - currentTime1) + " ms");
+
+    @Var
+    int size = 0;
+    for (Map.Entry<String, ArrayList<Fact>> entry : ad.factMap.entrySet()) {
+      size = size + entry.getValue().size();
+    }
+
+    System.out.println("the siez of all facts is: " + size);
+  }
+
+  private static void writeFile(HashMap<String, ArrayList<Fact>> map) throws IOException {
+    try (BufferedWriter bw = Files.newBufferedWriter(
+        Paths.get(System.getProperty("user.dir") + File.separator + "output.text"), UTF_8)) {
+      for (Map.Entry<String, ArrayList<Fact>> entry : map.entrySet()) {
+        ArrayList<Fact> temp = entry.getValue();
+        for (Fact fact : temp) {
+          bw.write(fact.toString());
+          bw.newLine();
+        }
+      }
+    }
+  }
 }
