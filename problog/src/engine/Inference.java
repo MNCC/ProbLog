@@ -37,15 +37,15 @@ public class Inference {
 
   private final DatalogParser parser;
   private final Map<String, Fact> database;
-  private final ArrayList<Rule> rules;
-  public HashMap<String, ArrayList<Fact>> factMap;
+  private final List<Rule> rules;
+  public Map<String, List<Fact>> factMap;
   public boolean useMax = false;
-  public boolean useProduction = false;
+  public boolean useProduct = false;
   private boolean hasProbability;
 
-  public Inference(String textName, boolean hasProbability) throws IOException {
+  public Inference(String filename, boolean hasProbability) throws IOException {
     parser = new DatalogParser();
-    parser.dataReader(textName);
+    parser.dataReader(filename);
     this.hasProbability = hasProbability;
     parser.parse(this.hasProbability);
     database = parser.buildMap();
@@ -121,7 +121,7 @@ public class Inference {
     Fact fact = new Fact(predicate, constants);
 
     if (hasProbability) {
-      double p = useProduction ? product(facts) : min(facts);
+      double p = useProduct ? product(facts) : min(facts);
       fact.probability = p * rule.probability;
     }
     return fact;

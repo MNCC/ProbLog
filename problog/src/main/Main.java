@@ -1,20 +1,16 @@
 package main;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
-
 import engine.AdInference;
 import engine.Inference;
 import types.Fact;
@@ -37,8 +33,8 @@ public class Main {
       String pro = sc.nextLine().toLowerCase();
       System.out.println("do you want max function for disjunction? enter(y?): ");
       String max = sc.nextLine().toLowerCase();
-      System.out.println("do you want production function for conjunction? enter(y?): ");
-      String production = sc.nextLine().toLowerCase();
+      System.out.println("do you want product function for conjunction? enter(y?): ");
+      String product = sc.nextLine().toLowerCase();
 
       @Var
       boolean hasProbability = false;
@@ -48,9 +44,9 @@ public class Main {
       }
 
       if (way.equals("s")) {
-        testSemiNaive(textName, hasProbability, max);
+        testSemiNaive(textName, hasProbability, max, product);
       } else {
-        testNaive(textName, hasProbability, max, production);
+        testNaive(textName, hasProbability, max, product);
       }
 
       System.out.println("do you want continue(y?), enter: ");
@@ -62,71 +58,73 @@ public class Main {
     }
   }
 
-  private static void testNaive(String filename, boolean hasProbability, String max,
-      String production) throws IOException {
+  private static void testNaive(String filename, boolean hasProbability, String max, String product)
+      throws IOException {
 
-    Inference i = new Inference(File.separator + filename, hasProbability);
+    Inference inference = new Inference(File.separator + filename, hasProbability);
     if (max.equals("y")) {
-      i.useMax = true;
+      inference.useMax = true;
     }
-    if (production.equals("y")) {
-      i.useProduction = true;
+    if (product.equals("y")) {
+      inference.useProduct = true;
     }
 
     long currentTime1, currentTime2;
     currentTime1 = System.currentTimeMillis();
-    i.naive();
+    inference.naive();
     currentTime2 = System.currentTimeMillis();
 
-    System.out.println(i.factMap);
+    System.out.println(inference.factMap);
 
-    writeFile(i.factMap);
+    writeFile(inference.factMap);
 
     System.out.println("use time: " + (currentTime2 - currentTime1) + " ms");
 
     @Var
     int size = 0;
-    for (Map.Entry<String, ArrayList<Fact>> entry : i.factMap.entrySet()) {
+    for (Map.Entry<String, List<Fact>> entry : inference.factMap.entrySet()) {
       size = size + entry.getValue().size();
     }
 
     System.out.println("the size of all facts is: " + size);
   }
 
-  private static void testSemiNaive(String filename, boolean hasProbability, String max)
-      throws IOException {
+  private static void testSemiNaive(String filename, boolean hasProbability, String max,
+      String product) throws IOException {
 
-    AdInference ad = new AdInference(File.separator + filename, hasProbability); // this is semi
-                                                                                 // naive
+    AdInference inference = new AdInference(File.separator + filename, hasProbability);
     if (max.equals("y")) {
-      ad.useMax = true;
+      inference.useMax = true;
+    }
+    if (product.equals("y")) {
+      inference.useProduct = true;
     }
 
     long currentTime1, currentTime2;
     currentTime1 = System.currentTimeMillis();
-    ad.semi_naive();
+    inference.semi_naive();
     currentTime2 = System.currentTimeMillis();
 
-    System.out.println(ad.factMap);
+    System.out.println(inference.factMap);
 
-    writeFile(ad.factMap);
+    writeFile(inference.factMap);
 
     System.out.println("use time: " + (currentTime2 - currentTime1) + " ms");
 
     @Var
     int size = 0;
-    for (Map.Entry<String, ArrayList<Fact>> entry : ad.factMap.entrySet()) {
+    for (Map.Entry<String, List<Fact>> entry : inference.factMap.entrySet()) {
       size = size + entry.getValue().size();
     }
 
     System.out.println("the siez of all facts is: " + size);
   }
 
-  private static void writeFile(HashMap<String, ArrayList<Fact>> map) throws IOException {
+  private static void writeFile(Map<String, List<Fact>> map) throws IOException {
     try (BufferedWriter bw = Files.newBufferedWriter(
         Paths.get(System.getProperty("user.dir") + File.separator + "output.text"), UTF_8)) {
-      for (Map.Entry<String, ArrayList<Fact>> entry : map.entrySet()) {
-        ArrayList<Fact> temp = entry.getValue();
+      for (Map.Entry<String, List<Fact>> entry : map.entrySet()) {
+        List<Fact> temp = entry.getValue();
         for (Fact fact : temp) {
           bw.write(fact.toString());
           bw.newLine();

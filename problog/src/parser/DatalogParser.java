@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
@@ -17,9 +18,9 @@ import types.Rule;
 @CheckReturnValue
 public class DatalogParser {
 
-  public final ArrayList<Fact> edb = new ArrayList<>();
-  public final ArrayList<Rule> rules = new ArrayList<>();
-  private final ArrayList<String> lines = new ArrayList<>();
+  public final List<Fact> edb = new ArrayList<>();
+  public final List<Rule> rules = new ArrayList<>();
+  private final List<String> lines = new ArrayList<>();
 
   public void dataReader(String filename) throws IOException {
     try (BufferedReader br =

@@ -38,18 +38,19 @@ public class AdInference {
 
   private final DatalogParser parser;
   private final Map<String, Fact> database;
-  private final ArrayList<Rule> rules;
-  private final ArrayList<RuleTree> trees;
-  private final HashMap<String, Fact> factCollections;
-  public HashMap<String, ArrayList<Fact>> factMap;
+  private final List<Rule> rules;
+  private final List<RuleTree> trees;
+  private final Map<String, Fact> factCollections;
+  public Map<String, List<Fact>> factMap;
   public boolean useMax = false;
+  public boolean useProduct = false;
   private boolean hasProbability;
-  private ArrayList<Fact> preIDB;
-  private ArrayList<Fact> curIDB;
+  private List<Fact> preIDB;
+  private List<Fact> curIDB;
 
-  public AdInference(String textName, boolean hasProbability) throws IOException {
+  public AdInference(String filename, boolean hasProbability) throws IOException {
     parser = new DatalogParser();
-    parser.dataReader(textName);
+    parser.dataReader(filename);
     this.hasProbability = hasProbability;
     parser.parse(this.hasProbability);
     database = parser.buildMap();
@@ -151,7 +152,7 @@ public class AdInference {
     Fact fact = new Fact(predicate, constants);
 
     if (hasProbability) {
-      double probability = useMax ? product(facts) : min(facts);
+      double probability = useProduct ? product(facts) : min(facts);
       fact.probability = probability * rule.probability;
     }
 
@@ -560,7 +561,7 @@ public class AdInference {
       }
     }
 
-    preIDB = (ArrayList<Fact>) curIDB.clone();
+    preIDB = new ArrayList<>(curIDB);
     curIDB = new ArrayList<>(dupFactRemove(idb));
 
     return isChange;
