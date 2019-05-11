@@ -8,7 +8,7 @@ import java.util.Map;
 
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
-import dataparser.dlParser;
+import parser.DatalogParser;
 import types.Fact;
 import types.Literal;
 import types.Rule;
@@ -21,7 +21,7 @@ class AnwserTree{
 	  public AnwserTree(Fact curAnwser){
 		  this.curAnwser=curAnwser;
 		  child= new ArrayList<>();
-		 
+
 	  }
 
 	  @Override
@@ -32,18 +32,18 @@ class AnwserTree{
 
 @CheckReturnValue
 public class Inference {
-       private HashMap<String,Fact> database;
-       private final dlParser parser;
+       private Map<String,Fact> database;
+       private final DatalogParser parser;
        private ArrayList<Rule> rules;
        private boolean hasPro;
        public HashMap<String,ArrayList<Fact>> factMap;
        public boolean useMax=false;
        public boolean useProduction=false;
        public Inference(String textName,boolean hasPro) throws IOException{
-    	   parser=new dlParser();
+    	   parser=new DatalogParser();
     	   parser.dataReader(textName);
     	   this.hasPro=hasPro;
-    	   parser.parseData(this.hasPro);
+    	   parser.parse(this.hasPro);
     	   database=parser.buildMap();
     	   rules=parser.rules; 
     	   
@@ -70,7 +70,7 @@ public class Inference {
     	      
        }
        private void dfsTree(int depth, AnwserTree a, ArrayList<Fact> fs, Rule r){
-    	      if(depth==r.bodys.length)
+    	      if(depth==r.body.length)
     	      {
     	    	  
     	    	  getOnePath(a,fs);
@@ -91,8 +91,8 @@ public class Inference {
        }
        private Fact infer(Rule r, ArrayList<Fact> fs){
     	   HashMap<String,String> model= new HashMap<>();
- 	       for(int k=0;k<r.bodys.length;k++){
- 	    	  Literal l=r.bodys[k];
+ 	       for(int k = 0; k<r.body.length; k++){
+ 	    	  Literal l=r.body[k];
  	    	  
  	    	  for(int i=0;i<l.variables.length;i++){
  	    		  if(!model.containsKey(l.variables[i]))
@@ -107,7 +107,7 @@ public class Inference {
  	    	  if(model.containsKey(tHead.variables[i]))
  	    	     cons[i]=model.get(tHead.variables[i]);
  	    	  else{
- 	    		  cons[i]=model.get(r.bodys[r.bodys.length-1].variables[i]);
+ 	    		  cons[i]=model.get(r.body[r.body.length-1].variables[i]);
  	    	  }
  	      }
  	      Fact f=new Fact(pre,cons);
@@ -124,11 +124,11 @@ public class Inference {
     	      @Var int count=fs.size()-1;
     	      while(count>=0){
     	    	  ArrayList<Fact> temp= new ArrayList<>();
-    	    	  for(int i=0;i<r.bodys.length;i++){
+    	    	  for(int i = 0; i<r.body.length; i++){
     	    		  temp.add(fs.get(count-i));
     	    	  }
     	    	  res.add(infer(r,temp));
-    	    	  count=count-r.bodys.length;
+    	    	  count=count-r.body.length;
     	      }
     	      return res;
        }
@@ -149,8 +149,8 @@ public class Inference {
     	   return collection;
        }
        private void buildTree(int depth, Rule r, HashMap<String, String> model, AnwserTree parNode){
-    	      if(depth<r.bodys.length){
-    	    	  Literal curGoal=r.bodys[depth];
+    	      if(depth<r.body.length){
+    	    	  Literal curGoal=r.body[depth];
         	      if(factMap.containsKey(curGoal.predicate)){
         	    	  
         	    	  

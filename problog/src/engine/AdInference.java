@@ -9,7 +9,7 @@ import java.util.Map;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
-import dataparser.dlParser;
+import parser.DatalogParser;
 import types.Fact;
 import types.Literal;
 import types.Rule;
@@ -33,8 +33,8 @@ class RuleTree{
 
 @CheckReturnValue
 public class AdInference {
-	private HashMap<String,Fact> database;
-    private final dlParser parser;
+	private Map<String,Fact> database;
+    private final DatalogParser parser;
     private ArrayList<Rule> rules;
     private boolean hasPro;
     public HashMap<String,ArrayList<Fact>> factMap;
@@ -45,10 +45,10 @@ public class AdInference {
     public boolean useMax=false;
 
     public AdInference(String textName,boolean hasPro) throws IOException{
- 	   parser=new dlParser();
+ 	   parser=new DatalogParser();
  	   parser.dataReader(textName);
  	   this.hasPro=hasPro;
- 	   parser.parseData(this.hasPro);
+ 	   parser.parse(this.hasPro);
  	   database=parser.buildMap();
  	   rules=parser.rules; 
  	   
@@ -88,7 +88,7 @@ public class AdInference {
  	      
     }
     private void dfsTree(int depth, RuleTree a, ArrayList<Fact> fs, Rule r){
- 	      if(depth==r.bodys.length)
+ 	      if(depth==r.body.length)
  	      {
  	    	 
  	    	  getOnePath(a,fs);
@@ -101,7 +101,7 @@ public class AdInference {
  	      }
     }
     private void semiDfs(int depth, RuleTree a, ArrayList<Fact> fs, Fact newFact, Rule r){
-    	 if(depth<r.bodys.length)
+    	 if(depth<r.body.length)
 	      {
 
 	    		  if(a.val.eString().equals(newFact.eString())){
@@ -127,8 +127,8 @@ public class AdInference {
     }
     private Fact infer(Rule r, ArrayList<Fact> fs){
  	   HashMap<String,String> model= new HashMap<>();
-	       for(int k=0;k<r.bodys.length;k++){
-	    	  Literal l=r.bodys[k];
+	       for(int k = 0; k<r.body.length; k++){
+	    	  Literal l=r.body[k];
 	    	  
 	    	  for(int i=0;i<l.variables.length;i++){
 	    		  if(!model.containsKey(l.variables[i]))
@@ -143,7 +143,7 @@ public class AdInference {
 	    	  if(model.containsKey(tHead.variables[i]))
 	    	     cons[i]=model.get(tHead.variables[i]);
 	    	  else{
-	    		  cons[i]=model.get(r.bodys[r.bodys.length-1].variables[i]);
+	    		  cons[i]=model.get(r.body[r.body.length-1].variables[i]);
 	    	  }
 	      }
 	      Fact f=new Fact(pre,cons);
@@ -190,11 +190,11 @@ public class AdInference {
 		  @Var int count=fs.size()-1;
  	      while(count>=0){
  	    	  ArrayList<Fact> temp= new ArrayList<>();
- 	    	  for(int i=0;i<r.bodys.length;i++){
+ 	    	  for(int i = 0; i<r.body.length; i++){
  	    		  temp.add(fs.get(count-i));
  	    	  }
  	    	  res.add(infer(r,temp));
- 	    	  count=count-r.bodys.length;
+ 	    	  count=count-r.body.length;
  	      }
  	      return res;
     }
@@ -211,8 +211,8 @@ public class AdInference {
     					   break;
     			   }
     			   }
-    			   int max=r.bodys.length-1;
-    			   if(curFact.predicate.equals(r.bodys[0].predicate)){
+    			   int max=r.body.length-1;
+    			   if(curFact.predicate.equals(r.body[0].predicate)){
 		    		   if(hasPro){
 		    			   if(!database.containsKey(curFact.eString()))
 		    			   doUpdate(0,curFact,root,r);
@@ -266,8 +266,8 @@ public class AdInference {
     	   
     	   node.child.add(rt);
     	   rt.par=node;
-    	   if(depth<r.bodys.length-1){
-    		   Literal curGoal=r.bodys[depth];
+    	   if(depth<r.body.length-1){
+    		   Literal curGoal=r.body[depth];
     		   HashMap<String,String> curModel= new HashMap<>();
     		   for(int i=0;i<newFact.constants.length;i++){
 	    			  if(!curModel.containsKey(curGoal.variables[i].trim()))
@@ -282,10 +282,10 @@ public class AdInference {
     	   if(depth<=max){
     	   
 
-    			   Literal curGoal=r.bodys[depth];
+    			   Literal curGoal=r.body[depth];
     			if(curGoal.predicate.equals(newFact.predicate)){
     			   HashMap<String,String> model= new HashMap<>();
-    			   Literal lastMatch=r.bodys[depth-1];
+    			   Literal lastMatch=r.body[depth-1];
     			   Fact lastFact=node.val;
     			   for(int i=0;i<lastMatch.variables.length;i++){
     				   if(!model.containsKey(lastMatch.variables[i].trim()))
@@ -313,8 +313,8 @@ public class AdInference {
     	   }
     }
     private void buildTree(int depth, Rule r, HashMap<String, String> model, RuleTree parNode){
- 	      if(depth<r.bodys.length){
- 	    	  Literal curGoal=r.bodys[depth];
+ 	      if(depth<r.body.length){
+ 	    	  Literal curGoal=r.body[depth];
 
      	      if(factMap.containsKey(curGoal.predicate)){
      	    	  
@@ -405,12 +405,12 @@ public class AdInference {
  	    			  break;
  	    		  }
  	    	  }
- 	    	  if(r.bodys[0].predicate.equals(f.predicate))
+ 	    	  if(r.body[0].predicate.equals(f.predicate))
  	    		 doUpdate(0,f,root,r);
  	    	  
  	    	 
  	    	 for(RuleTree child:root.child)
- 	    	 updateTree(1,f,child,r.bodys.length-1,r);
+ 	    	 updateTree(1,f,child,r.body.length-1,r);
  	    	 }
  	     
 	   }

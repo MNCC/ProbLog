@@ -6,12 +6,12 @@ import com.google.errorprone.annotations.CheckReturnValue;
 public class Rule {
 
   public final Literal head;
-  public final Literal[] bodys;
+  public final Literal[] body;
   public final double probability;
 
-  public Rule(Literal head, Literal[] bodys, double probability) {
+  public Rule(Literal head, Literal[] body, double probability) {
     this.head = head;
-    this.bodys = bodys;
+    this.body = body;
     this.probability = probability;
   }
 
@@ -20,11 +20,11 @@ public class Rule {
     StringBuilder sb = new StringBuilder();
     sb.append(head.toString());
     sb.append(" :-");
-    for (int i = 0; i < bodys.length - 1; i++) {
-      sb.append(bodys[i].toString());
+    for (int i = 0; i < body.length - 1; i++) {
+      sb.append(body[i].toString());
       sb.append(" ,");
     }
-    sb.append(bodys[bodys.length - 1]);
+    sb.append(body[body.length - 1]);
     if (probability != 1) {
       sb.append(" :");
       sb.append(probability);
