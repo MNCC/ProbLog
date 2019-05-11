@@ -10,9 +10,9 @@ import java.util.HashMap;
 
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
-import util.Fact;
-import util.Literal;
-import util.Rule;
+import types.Fact;
+import types.Literal;
+import types.Rule;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 

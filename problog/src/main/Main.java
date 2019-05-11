@@ -15,7 +15,7 @@ import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
 import engine.AdInference;
 import engine.Inference;
-import util.Fact;
+import types.Fact;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 

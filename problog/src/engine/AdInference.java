@@ -10,9 +10,9 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
 import dataparser.dlParser;
-import util.Fact;
-import util.Literal;
-import util.Rule;
+import types.Fact;
+import types.Literal;
+import types.Rule;
 
 @CheckReturnValue
 class RuleTree{
