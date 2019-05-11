@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
 import dataparser.dlParser;
 import util.Fact;
 import util.Literal;
 import util.Rule;
 
+@CheckReturnValue
 class RuleTree{
 	Fact val=null;
 	final ArrayList<RuleTree> child;
@@ -27,6 +30,8 @@ class RuleTree{
 		return val.toString();
 	}
 }
+
+@CheckReturnValue
 public class AdInference {
 	public HashMap<String,Fact> database;
     final dlParser parser;
@@ -165,6 +170,8 @@ public class AdInference {
 	      updateCollection(f,fs);
 	      return f;
     }
+
+    @CanIgnoreReturnValue
     public boolean updateCollection(Fact f, ArrayList<Fact> fs){
     	   @Var boolean isUpdate=false;
     	   StringBuilder sb=new StringBuilder();
@@ -578,6 +585,7 @@ public class AdInference {
 		       return x1.add(x2).subtract(x1.multiply(x2)).doubleValue();
 	   }
 
+	   @CanIgnoreReturnValue
 	   public boolean semi_update(){
     	      @Var boolean isChange=false;
 		      ArrayList<Fact> newIDB= new ArrayList<>();

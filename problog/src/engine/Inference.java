@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
 import dataparser.dlParser;
 import util.Fact;
 import util.Literal;
 import util.Rule;
 
+@CheckReturnValue
 class AnwserTree{
 	  final Fact curAnwser;
 	  AnwserTree par=null;
@@ -27,6 +29,8 @@ class AnwserTree{
 		  return curAnwser.toString();
 	  }
 }
+
+@CheckReturnValue
 public class Inference {
        public HashMap<String,Fact> database;
        final dlParser parser;

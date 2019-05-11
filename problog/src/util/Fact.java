@@ -1,5 +1,8 @@
 package util;
 
+import com.google.errorprone.annotations.CheckReturnValue;
+
+@CheckReturnValue
 public class Fact {
 
 	   public String predicate;

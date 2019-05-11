@@ -1,5 +1,8 @@
 package util;
 
+import com.google.errorprone.annotations.CheckReturnValue;
+
+@CheckReturnValue
 public class Rule {
 
 	   public Literal head;

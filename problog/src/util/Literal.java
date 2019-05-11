@@ -1,7 +1,9 @@
 package util;
 
 
+import com.google.errorprone.annotations.CheckReturnValue;
 
+@CheckReturnValue
 public class Literal {
  
 	   public String predicate;

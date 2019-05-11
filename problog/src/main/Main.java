@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 
+import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
 import engine.AdInference;
 import engine.Inference;
@@ -18,6 +19,7 @@ import util.Fact;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+@CheckReturnValue
 public class Main {
 
 	public static void main(String[] args) throws IOException {

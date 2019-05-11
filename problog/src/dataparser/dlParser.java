@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
 import util.Fact;
 import util.Literal;
@@ -15,6 +16,7 @@ import util.Rule;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+@CheckReturnValue
 public class dlParser {
     
     final ArrayList<String> dataSentence= new ArrayList<>();
