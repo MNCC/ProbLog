@@ -45,7 +45,6 @@ public class dlParser {
 		   right=str.indexOf(")");
 		   if(left==-1||right==-1)
 			   return false;
-		   String pre=str.substring(0, left);
 		   String val=str.substring(left, right+1);
 		   if(!val.contains(","))
 			   return false;
@@ -64,7 +63,6 @@ public class dlParser {
 		   right=str.indexOf(")");
 		   if(left==-1||right==-1)
 			   return false;
-		   String pre=str.substring(0, left);
 		   String val=str.substring(left, right+1);
 		   if(!val.contains(","))
 			   return false;
@@ -75,28 +73,7 @@ public class dlParser {
 		}
 		   return true;
 	}
-	public boolean isRule(String str){
-		if(!str.contains(":-"))
-			return false;
-		String[] divide=str.split(":-");
-		if(divide.length!=2)
-			return false;
-		String head=divide[0].trim();
-		String body=divide[1].trim();
-		//System.out.println(head);
-		//System.out.println(body);
-		if(!isLiteral(head))
-			return false;
-		String[] bodys=body.split(", ");
-		for (String s : bodys) {
-			if (!isLiteral(s) && !isFact(s)) {
-				System.out.println(s + " is wrong");
-				return false;
-			}
 
-		}
-		return true;
-	}
 	public Literal generateLiteral(String str){
 		 
 		  int hl=str.indexOf("("), hr=str.indexOf(")");
@@ -105,6 +82,7 @@ public class dlParser {
 		  return new Literal(pre,val);
 		  
 	}
+
    public void parseData(boolean hasPro){
 	   @Var int line=0;
 	   for(@Var String s:dataSentence){
@@ -129,7 +107,7 @@ public class dlParser {
 		    			  Literal l=generateLiteral(bodys[i]);
 		    			  ls[i]=l;
 		    		  }
-		    		  Rule r=new Rule(line,h,ls,pro);
+		    		  Rule r=new Rule(h,ls,pro);
 		    		  line++;
 		    		  rules.add(r);
 		    	  }catch(Exception e){
@@ -145,8 +123,7 @@ public class dlParser {
 		    		  int last=s.indexOf(".");
 		    		  String pre=s.substring(0, left);
 		    		  String[] constants=s.substring(left+1, right).split(",");
-		    		 
-		    		  boolean isLegal=true;
+
 //		    		  for(int i=0;i<constants.length;i++){  // check edge(1,2)
 //		   			     String temp=constants[i];
 //		   			     if(constants[i].length()==1&&constants[i].charAt(0)>='A'&&constants[i].charAt(0)<='Z'){
@@ -213,13 +190,4 @@ public class dlParser {
 	    	  
 	      }
    }
-   public void print(){
-	   for(Rule r:rules){
-		   System.out.println(r);
-	   }
-	   for(Fact f:edb){
-		   System.out.println(f);
-	   }
-   }
-	
 }

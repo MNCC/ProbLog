@@ -6,11 +6,7 @@ public class Literal {
  
 	   public String predicate;
 	   public String[] variables;
-	   
-	   public Literal(){
-		   
-	   }
-	   
+
 	   public Literal(String predicate, String[] variables){
 		   this.predicate=predicate;
 		   this.variables=variables;

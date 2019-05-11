@@ -5,10 +5,7 @@ public class Fact {
 	   public String predicate;
 	   public String[] constants;
 	   public double pro=1;
-	   
-	   public Fact(){
-		   
-	   }
+
 	   public Fact(String predicate, String[] constants){
 		   this.predicate=predicate;
 		   this.constants=constants;

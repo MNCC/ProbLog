@@ -16,8 +16,7 @@ class RuleTree{
 	Fact val=null;
 	final ArrayList<RuleTree> child;
 	RuleTree par=null;
-	boolean canInsert=false;
-	Rule r=null;
+
 	public RuleTree(Fact val){
 		this.val=val;
 		child= new ArrayList<>();
@@ -39,8 +38,7 @@ public class AdInference {
     public ArrayList<Fact> curIDB;
     public HashMap<String,Fact> factCollections;
     public boolean useMax=false;
-    public boolean useProduction=false;
-    boolean semiUpdate=false;
+
     public AdInference(String textName,boolean hasPro) throws IOException{
  	   parser=new dlParser();
  	   parser.dataReader(textName);
@@ -123,27 +121,7 @@ public class AdInference {
 	      }
 	      
     }
-    public void removeDuplicate(RuleTree a){
-    	HashMap<String,RuleTree> map= new HashMap<>();
-    	for(int i=0;i<a.child.size();i++){
-    		if(!map.containsKey(a.child.get(i).val.toString())){
-    			map.put(a.child.get(i).val.toString(), a.child.get(i));
-    		}
-    		else{
-    			a.child.remove(i);
-    		}
-    	}
-    }
-    public void printTree(RuleTree a){
 
- 	      for(RuleTree child:a.child){
- 	    	  if(child.par!=null)
- 	    		  System.out.println(child.val+" and the par is"+child.par);
- 	    	  else
- 	    	  System.out.println(child.val);
- 	    	  printTree(child);
- 	      }
-    }
     public ArrayList<ArrayList<Fact>> inferFacts(ArrayList<ArrayList<Fact>> collection,Rule r){
  	   ArrayList<ArrayList<Fact>> res= new ArrayList<>();
 // 	   System.out.println("----------------------------");
@@ -184,11 +162,7 @@ public class AdInference {
 	      }
 //	      System.out.println("new fact is generate "+f+" from "+fs);
 //	      System.out.println("before: "+factCollections);
-	      if(updateCollection(f,fs)){
-	    	  //System.out.println("change: "+factCollections);
-	    	  semiUpdate=true;
-	      }
-	      //System.out.println("semiupdate is: "+semiUpdate);
+	      updateCollection(f,fs);
 	      return f;
     }
     public boolean updateCollection(Fact f, ArrayList<Fact> fs){
@@ -299,7 +273,6 @@ public class AdInference {
  	   Fact f=new Fact(r.toString(),s);
  	   HashMap<String,String> model= new HashMap<>();
  	   RuleTree a=new RuleTree(f);
- 	   a.r=r;
  	   buildTree(0,r,model,a);
  	   trees.add(a);
  	   
@@ -378,8 +351,6 @@ public class AdInference {
  	      if(depth<r.bodys.length){
  	    	  Literal curGoal=r.bodys[depth];
      	      //System.out.println(curGoal+"the depth is"+depth);
-     	     
-     	      String lastFact=parNode.val.toString();
 
      	      if(factMap.containsKey(curGoal.predicate)){
      	    	  
@@ -412,11 +383,7 @@ public class AdInference {
  	    			  parNode.child.add(node);
  	    			  node.par=parNode;
  	    			  buildTree( depth+1,r,curModel,node);
- 	    			  if(depth!=r.bodys.length-1&&node.child.isEmpty())
- 	    				  node.canInsert=true;
-     	    		  
      	    		  }
-  	    	  
      	      }
  	      }
 //     	      else{
@@ -513,7 +480,7 @@ public class AdInference {
 		   }
 		  return res; 
 	   }
-	   public boolean isUpdate(ArrayList<Fact> idb,int count){
+	   public boolean isUpdate(ArrayList<Fact> idb){
 		   		@Var boolean res=false;
 //		      ArrayList<Fact> pfs=new ArrayList<Fact>();
 //		      
@@ -569,7 +536,6 @@ public class AdInference {
 		    			  if(database.get(f.eString()).pro!=f.pro){
 //		    				  if(count==1){
 		    				  //System.out.println("f is: "+f);
-		    					  double p=database.get(f.eString()).pro;
 		    					  //System.out.println("update "+f+" into "+fs.get(f.eString()));
 		    					  database.get(f.eString()).pro=f.pro;
 		    					  res=true;
@@ -611,19 +577,7 @@ public class AdInference {
 		   else
 		       return x1.add(x2).subtract(x1.multiply(x2)).doubleValue();
 	   }
-	   public void outPrint(){
-		   for(Map.Entry<String, ArrayList<Fact>> entry:factMap.entrySet()){
-			   System.out.println(entry.getKey()+" facts: ");
-			   ArrayList<Fact> fs=entry.getValue();
-			   for(Fact f:fs){
-				   System.out.println(f);
-			   }
-		   }
-	   }
-	   public void resetIDB(){
-		  for(int i=0;i<curIDB.size();i++)
-			  curIDB.remove(i);
-	   }
+
 	   public boolean semi_update(){
     	      @Var boolean isChange=false;
 		      ArrayList<Fact> newIDB= new ArrayList<>();
@@ -695,16 +649,12 @@ public class AdInference {
 	    	  System.out.println("rules is "+rules);
 	    	  @Var int count=1;
 		      while(isupdate){
-		    	  semiUpdate=false;
 		    	  //System.out.println("curEDB is: "+factMap);
 		    	  
 			      //System.out.println("curIDB is: "+curIDB);
 		    	  isupdate=false;
 				  @Var ArrayList<Fact> idb= new ArrayList<>();
-				  @Var ArrayList<Fact> lastIDB= new ArrayList<>();
-		    	  lastIDB=(ArrayList<Fact>) curIDB.clone();
-		    	  //System.out.println("preIDB is: "+lastIDB);
-		    	  
+
 		    	  if(count==1){
 		    	  for(Rule r:rules){
 					  @Var ArrayList<ArrayList<Fact>> temp= new ArrayList<>();
@@ -759,7 +709,7 @@ public class AdInference {
 		    	  semi_update();
 		    	  //System.out.println("facts collection is: "+factCollections);
 		    	  
-		    	  isupdate=isUpdate(idb,count);
+		    	  isupdate=isUpdate(idb);
 		    	 // isupdate=semiUpdate;
 		    	  //System.out.println("should update? "+isupdate);
 		    	  

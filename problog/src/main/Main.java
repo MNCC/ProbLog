@@ -39,7 +39,7 @@ public class Main {
 				hasPro=true;
 			if(way.equals("s")){
 				
-				testSemiNaive(textName,hasPro,max,production);
+				testSemiNaive(textName,hasPro,max);
 			}
 			else{
 				testNaive(textName,hasPro,max,production);
@@ -77,13 +77,11 @@ public class Main {
 		 System.out.println("the siez of all facts is: "+size);
 	     
 	}
-	public static void testSemiNaive(String textName,boolean hasPro,String max, String production) throws IOException{
+	public static void testSemiNaive(String textName,boolean hasPro,String max) throws IOException{
 		
 		 AdInference ad=new AdInference(File.separator+textName,hasPro); // this is semi naive
 		 if(max.equals("y"))
 	    	  ad.useMax=true;
-	      if(production.equals("y"))
-	    	  ad.useProduction=true;
 	        long currentTime1,currentTime2;
 	        currentTime1=System.currentTimeMillis();
 	        ad.semi_naive();

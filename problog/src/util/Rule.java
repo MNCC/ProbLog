@@ -2,17 +2,11 @@ package util;
 
 public class Rule {
 
-	   public int ruleNum;
 	   public Literal head;
 	   public Literal[] bodys;
 	   public double pro;
-	   
-	   public Rule(){
-		   
-	   }
-	   
-	   public Rule(int ruleNum,Literal head,Literal[] bodys, double pro ){
-		   this.ruleNum=ruleNum;
+
+	   public Rule(Literal head,Literal[] bodys, double pro ){
 		   this.head=head;
 		   this.bodys=bodys;
 		   this.pro=pro;

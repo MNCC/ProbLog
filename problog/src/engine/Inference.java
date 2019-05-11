@@ -78,13 +78,7 @@ public class Inference {
     	    	  }
     	      }
        }
-       public void printTree(AnwserTree a){
 
-    	      for(AnwserTree child:a.child){
-    	    	  System.out.println("CNM"+child.curAnwser);
-    	    	  printTree(child);
-    	      }
-       }
        public ArrayList<ArrayList<Fact>> inferFacts(ArrayList<ArrayList<Fact>> collection,Rule r){
     	   ArrayList<ArrayList<Fact>> res= new ArrayList<>();
 		   for (ArrayList<Fact> facts : collection)
@@ -159,8 +153,7 @@ public class Inference {
     	      if(depth<r.bodys.length){
     	    	  Literal curGoal=r.bodys[depth];
         	      //System.out.println(curGoal+"the depth is"+depth);
-        	     
-        	      String lastFact=parNode.curAnwser.toString();
+
 //        	      for(String str:model.keySet()){
 //        	    	  curModel.put(str, model.get(str));
 //        	      }   	
@@ -326,15 +319,7 @@ public class Inference {
 		   else
 		   return x1.add(x2).subtract(x1.multiply(x2)).doubleValue();
 	   }
-	   public void outPrint(){
-		   for(Map.Entry<String, ArrayList<Fact>> entry:factMap.entrySet()){
-			   System.out.println(entry.getKey()+" facts: ");
-			   ArrayList<Fact> fs=entry.getValue();
-			   for(Fact f:fs){
-				   System.out.println(f);
-			   }
-		   }
-	   }
+
 	   public void naive(){
 
        	      @Var boolean isupdate=true;
