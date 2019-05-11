@@ -10,7 +10,7 @@ except that each rule/fact is associated with a real number value v in the range
 rule/fact. That is, a rule is an expression of the form:
 
 ```
-p(X1, ...,Xn) : −q1(Y 1, .., Y i), ...., qk(Z1, ...,Zj) : v1.
+p(X1, ...,Xn) :− q1(Y 1, .., Y i), ...., qk(Z1, ...,Zj) : v1.
 ```
 
 and a fact is an expression of the form: `q(a1, ..,am) : v2.`
